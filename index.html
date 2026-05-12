@@ -2,13 +2,16 @@
 <html lang="zh-TW" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Don't Fear Of Surgery - 手繪風專案報告 | Edwards Lifesciences</title>
-    <!-- 引入 Tailwind CSS 進行排版 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Edwards Lifesciences - Don't Fear Of Surgery 專案成效報告與互動遊戲。">
+    <meta property="og:title" content="Don't Fear Of Surgery | Edwards Lifesciences">
+    <meta property="og:description" content="透過數據量化台灣市場治療缺口，並運用情感驅動與社群擴散，打造手術安心指南。">
+    <meta property="og:type" content="website">
+    
+    <title>Don't Fear Of Surgery - 專案報告與互動遊戲 | Edwards Lifesciences</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 引入 FontAwesome 圖示 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- 引入 Google Fonts 手寫風字體 -->
     <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
     
     <script>
@@ -17,10 +20,10 @@
                 extend: {
                     colors: {
                         edwards: {
-                            red: '#C8102E',    /* Edwards 品牌紅 */
-                            gray: '#898D8D',   /* Edwards 鈦灰色 */
-                            ink: '#2D3436',    /* 手繪墨水深色 */
-                            paper: '#FDFBF7'   /* 手繪紙張背景 */
+                            red: '#C8102E',    
+                            gray: '#898D8D',   
+                            ink: '#2D3436',    
+                            paper: '#FDFBF7'   
                         }
                     },
                     fontFamily: {
@@ -31,8 +34,8 @@
             }
         }
     </script>
+    
     <style>
-        /* 手繪風格核心 CSS */
         body {
             background-color: #FDFBF7;
             background-image: radial-gradient(#d5d0ce 1px, transparent 1px);
@@ -44,7 +47,6 @@
             font-family: 'Kalam', 'Noto Sans TC', cursive;
         }
 
-        /* 手繪風不規則邊框外框 */
         .sketch-box {
             background: #fff;
             border: 3px solid #2D3436;
@@ -59,48 +61,11 @@
             box-shadow: 8px 8px 0 rgba(200, 16, 46, 0.2);
         }
 
-        /* 標記背景 (螢光筆劃過) */
         .marker-highlight {
             background: linear-gradient(104deg, rgba(200,16,46,0) 0.9%, rgba(200,16,46,0.2) 2.4%, rgba(200,16,46,0.15) 5.8%, rgba(200,16,46,0.05) 93%, rgba(200,16,46,0) 96%);
             padding: 0 10px;
         }
 
-        /* 手繪按鈕 */
-        .sketch-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: #C8102E;
-            color: #fff !important;
-            border: 2px solid #2D3436;
-            border-radius: 15px 225px 15px 255px/255px 15px 225px 15px;
-            padding: 10px 20px;
-            font-weight: 700;
-            text-decoration: none;
-            box-shadow: 3px 3px 0 #2D3436;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            font-family: 'Kalam', 'Noto Sans TC', cursive;
-            font-size: 0.95rem;
-        }
-        .sketch-btn-outline {
-            background: #fff;
-            color: #2D3436 !important;
-            border: 2px dashed #2D3436;
-            box-shadow: 3px 3px 0 #898D8D;
-        }
-        .sketch-btn:hover {
-            background: #9e0d24;
-            transform: translate(-1px, -1px);
-            box-shadow: 4px 4px 0 #2D3436;
-        }
-        .sketch-btn-outline:hover {
-            background: #f1f5f9;
-            transform: translate(-1px, -1px);
-            box-shadow: 4px 4px 0 #898D8D;
-        }
-
-        /* 手繪標題底線 */
         .sketch-underline {
             position: relative;
             display: inline-block;
@@ -116,14 +81,9 @@
             background-size: 100% 100%;
         }
 
-        /* 表格手繪風 (若有需要) */
-        .list-check li { position: relative; padding-left: 1.5rem; margin-bottom: 0.5rem; }
-        .list-check li::before { content: '✓'; position: absolute; left: 0; color: #C8102E; font-weight: bold; }
-
-        /* 影片嵌入容器 */
         .video-container {
             position: relative;
-            padding-bottom: 56.25%; /* 16:9 比例 */
+            padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
             border: 3px solid #2D3436;
@@ -138,16 +98,122 @@
             width: 100%;
             height: 100%;
         }
+
+        .reveal-section {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes float-doodle {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+        .animate-doodle {
+            animation: float-doodle 3s ease-in-out infinite;
+        }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .sketch-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #C8102E;
+            color: #fff !important;
+            border: 2px solid #2D3436;
+            border-radius: 15px 225px 15px 255px/255px 15px 225px 15px;
+            padding: 12px 24px;
+            font-weight: 700;
+            box-shadow: 3px 3px 0 #2D3436;
+            transition: all 0.1s ease;
+            cursor: pointer;
+            font-family: 'Kalam', 'Noto Sans TC', cursive;
+            user-select: none;
+        }
+        .sketch-btn:active:not(:disabled) {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0 #2D3436;
+        }
     </style>
 </head>
-<body class="antialiased font-sans">
+<body class="antialiased font-sans overflow-x-hidden">
 
-    <!-- 頂部 Header -->
-    <header class="pt-16 pb-12 px-4 max-w-5xl mx-auto text-center">
+    <!-- ================= 導覽選單 (Desktop) ================= -->
+    <nav class="hidden xl:flex fixed right-0 top-1/2 -translate-y-1/2 z-50 transform translate-x-[calc(100%-3rem)] hover:translate-x-0 transition-transform duration-500 ease-in-out group">
+        <div class="w-12 bg-white border-y-2 border-l-2 border-edwards-ink rounded-l-xl shadow-[-4px_4px_0_#2D3436] flex flex-col items-center justify-center py-6 cursor-pointer mr-[-2px]">
+            <i class="fa-solid fa-chevron-left text-edwards-red mb-3 group-hover:rotate-180 transition-transform duration-500"></i>
+            <span style="writing-mode: vertical-rl; letter-spacing: 0.15em;" class="font-bold text-edwards-ink text-[13px] tracking-widest">目錄導覽</span>
+        </div>
+        <div class="w-52 p-5 bg-white border-y-2 border-l-2 border-edwards-ink rounded-l-[15px_225px_15px_225px/255px_15px_225px_15px] shadow-[-4px_4px_0_#2D3436]">
+            <div class="text-lg font-bold text-edwards-ink mb-3 border-b-2 border-dashed border-slate-300 pb-2 hand-font flex items-center justify-center gap-2">
+                <i class="fa-solid fa-map-location-dot text-edwards-red"></i> 快速跳轉
+            </div>
+            <ul class="flex flex-col gap-3" id="desktop-toc">
+                <li><a href="#sec-1" class="toc-link block text-[13px] font-bold text-slate-500 hover:text-edwards-red transition-all pl-2 border-l-4 border-transparent hover:border-edwards-red" data-target="sec-1">一、市場數據與戰略</a></li>
+                <li><a href="#sec-2" class="toc-link block text-[13px] font-bold text-slate-500 hover:text-edwards-red transition-all pl-2 border-l-4 border-transparent hover:border-edwards-red" data-target="sec-2">二、TA定位與決策</a></li>
+                <li><a href="#sec-3" class="toc-link block text-[13px] font-bold text-slate-500 hover:text-edwards-red transition-all pl-2 border-l-4 border-transparent hover:border-edwards-red" data-target="sec-3">三、永續戰略樞紐</a></li>
+                <li><a href="#sec-4" class="toc-link block text-[13px] font-bold text-slate-500 hover:text-edwards-red transition-all pl-2 border-l-4 border-transparent hover:border-edwards-red" data-target="sec-4">四、情感驅動核心</a></li>
+                <li><a href="#sec-5" class="toc-link block text-[13px] font-bold text-slate-500 hover:text-edwards-red transition-all pl-2 border-l-4 border-transparent hover:border-edwards-red" data-target="sec-5">五、專案素材與露出</a></li>
+                <li><a href="#sec-6" class="toc-link block text-[13px] font-bold text-slate-500 hover:text-edwards-red transition-all pl-2 border-l-4 border-transparent hover:border-edwards-red" data-target="sec-6">六、社群共鳴分析</a></li>
+                <li><a href="#sec-7" class="toc-link block text-[13px] font-bold text-slate-500 hover:text-edwards-red transition-all pl-2 border-l-4 border-transparent hover:border-edwards-red" data-target="sec-7">七、平台曝光總和</a></li>
+                <li><a href="#sec-8" class="toc-link block text-[13px] font-bold text-slate-500 hover:text-edwards-red transition-all pl-2 border-l-4 border-transparent hover:border-edwards-red" data-target="sec-8">八、線下整合深耕</a></li>
+                <li><a href="#sec-9" class="toc-link block text-[13px] font-bold text-slate-500 hover:text-edwards-red transition-all pl-2 border-l-4 border-transparent hover:border-edwards-red" data-target="sec-9">九、後續與戰略協作</a></li>
+                <li><a href="#sec-11" class="toc-link block text-[13px] font-bold text-slate-500 hover:text-edwards-red transition-all pl-2 border-l-4 border-transparent hover:border-edwards-red" data-target="sec-11">十一、結語</a></li>
+                <!-- ★ 注意這裡：改為 ./game.html -->
+                <li><a href="./game.html" class="block text-[13px] font-bold text-edwards-red mt-2 transition-all pl-2 border-l-4 border-transparent hover:border-edwards-red bg-red-50 p-1 rounded"><i class="fa-solid fa-gamepad mr-1"></i>十二、互動挑戰</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ================= 導覽選單 (Mobile) ================= -->
+    <button id="mobile-toc-btn" class="xl:hidden fixed bottom-6 right-6 z-40 w-14 h-14 bg-edwards-red text-white border-2 border-edwards-ink rounded-[255px_15px_225px_15px/15px_225px_15px_255px] shadow-[4px_4px_0_#2D3436] flex items-center justify-center text-xl transition-transform hover:scale-110 active:scale-95" onclick="toggleMobileMenu()">
+        <i class="fa-solid fa-list-ul"></i>
+    </button>
+    <button id="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="fixed bottom-24 right-6 xl:bottom-8 xl:right-8 z-40 w-12 h-12 bg-white text-edwards-ink border-2 border-edwards-ink rounded-[255px_15px_225px_15px/15px_225px_15px_255px] shadow-[4px_4px_0_#898D8D] flex items-center justify-center text-xl transition-all duration-300 opacity-0 pointer-events-none translate-y-4 hover:-translate-y-1 hover:bg-slate-50 hover:text-edwards-red hover:shadow-[4px_4px_0_#C8102E]">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <div id="mobile-toc-modal" class="fixed inset-0 bg-edwards-ink/40 z-50 opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm flex flex-col justify-end">
+        <div id="mobile-toc-sheet" class="bg-paper p-6 rounded-t-[2rem] border-t-4 border-edwards-ink max-h-[75vh] overflow-y-auto no-scrollbar w-full transform translate-y-full transition-transform duration-300 relative shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
+            <div class="flex justify-between items-center mb-6 sticky top-0 bg-paper py-2 z-10 border-b-2 border-dashed border-slate-300">
+                <h3 class="font-bold text-xl hand-font text-edwards-ink"><i class="fa-solid fa-map-location-dot text-edwards-red mr-2"></i>跳轉地圖</h3>
+                <button onclick="toggleMobileMenu()" class="w-8 h-8 flex items-center justify-center bg-slate-100 rounded-full border-2 border-edwards-ink hover:bg-slate-200"><i class="fa-solid fa-xmark text-edwards-ink"></i></button>
+            </div>
+            <ul class="flex flex-col gap-4 pb-10">
+                <li><a href="#sec-1" class="block font-bold text-slate-600 active:text-edwards-red bg-white p-3 rounded-xl border-2 border-slate-200">一、市場數據與戰略</a></li>
+                <li><a href="#sec-2" class="block font-bold text-slate-600 active:text-edwards-red bg-white p-3 rounded-xl border-2 border-slate-200">二、TA定位與決策</a></li>
+                <li><a href="#sec-3" class="block font-bold text-slate-600 active:text-edwards-red bg-white p-3 rounded-xl border-2 border-slate-200">三、永續戰略樞紐</a></li>
+                <li><a href="#sec-4" class="block font-bold text-slate-600 active:text-edwards-red bg-white p-3 rounded-xl border-2 border-slate-200">四、情感驅動核心</a></li>
+                <li><a href="#sec-5" class="block font-bold text-slate-600 active:text-edwards-red bg-white p-3 rounded-xl border-2 border-slate-200">五、專案素材與露出</a></li>
+                <li><a href="#sec-6" class="block font-bold text-slate-600 active:text-edwards-red bg-white p-3 rounded-xl border-2 border-slate-200">六、社群共鳴分析</a></li>
+                <li><a href="#sec-7" class="block font-bold text-slate-600 active:text-edwards-red bg-white p-3 rounded-xl border-2 border-slate-200">七、平台曝光總和</a></li>
+                <li><a href="#sec-8" class="block font-bold text-slate-600 active:text-edwards-red bg-white p-3 rounded-xl border-2 border-slate-200">八、線下整合深耕</a></li>
+                <li><a href="#sec-9" class="block font-bold text-slate-600 active:text-edwards-red bg-white p-3 rounded-xl border-2 border-slate-200">九、後續與戰略協作</a></li>
+                <li><a href="#sec-11" class="block font-bold text-slate-600 active:text-edwards-red bg-white p-3 rounded-xl border-2 border-slate-200">十一、結語</a></li>
+                <!-- ★ 注意這裡：改為 ./game.html -->
+                <li><a href="./game.html" class="block font-bold text-edwards-red active:text-edwards-red bg-red-50 p-3 rounded-xl border-2 border-edwards-red"><i class="fa-solid fa-gamepad mr-2"></i>十二、互動挑戰：全球保衛戰</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ================= 頁首 Header ================= -->
+    <header class="pt-16 pb-12 px-4 max-w-5xl mx-auto text-center reveal-section relative">
+        <svg class="absolute top-10 left-10 md:left-32 w-8 h-8 text-yellow-400 animate-doodle opacity-80 z-0" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M50 10 L60 40 L90 40 L65 60 L75 90 L50 70 L25 90 L35 60 L10 40 L40 40 Z" />
+        </svg>
+        <svg class="absolute top-20 right-10 md:right-32 w-8 h-8 text-edwards-red animate-doodle opacity-60 z-0" style="animation-delay: 1s;" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M60 10 L20 50 L50 50 L40 90 L80 40 L50 40 Z" />
+        </svg>
+
         <div class="absolute top-4 left-1/2 -translate-x-1/2 w-32 h-6 bg-red-200/50 rotate-[-2deg] mix-blend-multiply z-10" style="border-radius: 2px;"></div>
         
         <div class="sketch-box mb-8 relative z-0">
-            <!-- 使用 Google 圖片伺服器路徑 (Edwards Logo) -->
             <img class="h-24 object-contain mx-auto mb-6" 
                  src="https://lh3.googleusercontent.com/d/1QJl_AerGZd0jRqOIZY-rCVVe6U67pmJM" 
                  alt="Edwards Logo" 
@@ -163,18 +229,25 @@
         </div>
     </header>
 
-    <!-- 主內容區塊 -->
-    <main class="max-w-5xl mx-auto px-4 pb-20 space-y-16">
+    <!-- ================= 報告主內容 ================= -->
+    <main class="max-w-5xl mx-auto px-4 pb-20 space-y-16 relative">
 
-        <!-- 一、 市場數據佐證與戰略洞察 -->
-        <section>
-            <h2 class="text-3xl font-bold mb-6 sketch-underline inline-block">一、市場數據佐證與戰略洞察</h2>
+        <svg class="absolute top-[10%] left-[-2%] w-10 h-10 text-slate-300 animate-doodle pointer-events-none hidden md:block z-0" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+            <path d="M20 50 L80 50 M50 20 L50 80" /> 
+        </svg>
+        <svg class="absolute top-[35%] right-[-3%] w-12 h-12 text-red-200 transform rotate-12 pointer-events-none hidden md:block z-0" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+            <path d="M10 50 C 30 10, 70 10, 90 50 C 70 90, 30 90, 10 50 Z" />
+            <circle cx="50" cy="50" r="10" />
+        </svg>
+
+        <!-- 第一段：市場數據 -->
+        <section id="sec-1" class="scroll-mt-24 reveal-section relative z-10">
+            <h2 class="text-3xl font-bold mb-6 sketch-underline inline-block">一、市場數據與戰略洞察</h2>
             <p class="mb-4 font-medium text-lg leading-relaxed">
                 身為市場領導者（Market Leader），專案的首要戰略在於<span class="text-edwards-red font-bold">「擴大市場容量 (Expand the Pie)」</span>。我們透過數據量化台灣市場存在的顯著<span class="marker-highlight">「治療缺口（Under-treatment）」</span>，將其轉化為增長動能。
             </p>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mt-8">
-                <!-- 手繪風長條圖區塊 -->
                 <div class="sketch-box bg-white relative pb-10">
                     <h3 class="text-xl font-bold mb-8 text-edwards-ink text-center hand-font">📊 台澳瓣膜置換年申報量對比</h3>
                     
@@ -195,7 +268,9 @@
                             <div class="text-edwards-red font-bold hand-font bg-white px-3 py-1 mb-1 border-2 border-edwards-red rounded-lg transform rotate-3 shadow-sm text-sm">
                                 不到發達國家一半！
                             </div>
-                            <i class="fa-solid fa-arrow-right-long text-edwards-red text-2xl transform -rotate-12 mt-1"></i>
+                            <svg class="w-12 h-12 text-edwards-red transform -rotate-12 mt-1 drop-shadow-md" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 20 Q 50 60 80 80 M 60 80 L 80 80 L 75 60" />
+                            </svg>
                         </div>
 
                         <div class="relative w-16 md:w-20 h-[95%] bg-edwards-gray shadow-[4px_4px_0_#2D3436] rounded-[15px_255px_15px_225px/225px_15px_255px_15px] border-2 border-edwards-ink flex flex-col justify-end items-center transition-transform hover:-translate-y-1">
@@ -230,23 +305,30 @@
             </div>
         </section>
 
-        <!-- 二、 受眾定位與決策導航 -->
-        <section>
-            <h2 class="text-3xl font-bold mb-6 sketch-underline inline-block">二、受眾定位與決策導航</h2>
+        <!-- 第二段：TA 定位 -->
+        <section id="sec-2" class="scroll-mt-24 reveal-section relative z-10">
+            <h2 class="text-3xl font-bold mb-6 sketch-underline inline-block">二、TA定位與決策</h2>
             
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="sketch-box bg-slate-50">
-                    <h3 class="text-xl font-bold mb-6 text-edwards-red border-b-2 border-dashed border-edwards-ink pb-2">🎯 互動式行銷漏斗</h3>
+            <div class="grid grid-cols-1 gap-8 max-w-3xl mx-auto">
+                <div class="sketch-box bg-slate-50 relative">
+                    <svg class="absolute -left-6 md:-left-12 top-1/3 w-12 h-12 md:w-16 md:h-16 text-edwards-gray transform -rotate-12 pointer-events-none hidden sm:block opacity-60" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="50" cy="30" r="15" />
+                        <path d="M50 45 L50 80 M50 60 L20 40 M50 60 L80 40 M50 80 L30 100 M50 80 L70 100" />
+                        <path d="M70 20 C 70 10, 85 10, 85 20 C 85 30, 75 30, 75 40" stroke-width="2"/>
+                        <circle cx="75" cy="48" r="1" fill="currentColor" stroke="none" />
+                    </svg>
+
+                    <h3 class="text-xl font-bold mb-6 text-edwards-red border-b-2 border-dashed border-edwards-ink pb-2">🎯 TA層級</h3>
                     
                     <div class="flex flex-col items-center gap-2 w-full px-4 mb-4">
-                        <div id="btn-funnel-top" onclick="changeFunnel('top')" class="w-full h-12 flex items-center justify-center cursor-pointer border-2 border-edwards-ink rounded-xl bg-slate-100 transition-all opacity-40 hover:opacity-100 hover:scale-105">
-                            <span class="font-bold hand-font">頂層：廣泛預防</span>
+                        <div id="btn-funnel-top" onclick="changeFunnel('top')" class="w-full h-12 flex items-center justify-center cursor-pointer border-2 border-edwards-ink rounded-xl bg-slate-100 transition-all shadow-md scale-105">
+                            <span class="font-bold hand-font">Disease Awareness</span>
                         </div>
                         <div id="btn-funnel-mid" onclick="changeFunnel('mid')" class="w-4/5 h-12 flex items-center justify-center cursor-pointer border-2 border-edwards-ink rounded-xl bg-slate-200 transition-all opacity-40 hover:opacity-100 hover:scale-105">
-                            <span class="font-bold hand-font">中層：症狀辨識</span>
+                            <span class="font-bold hand-font">Patient Awareness</span>
                         </div>
-                        <div id="btn-funnel-bot" onclick="changeFunnel('bot')" class="w-3/5 h-14 flex items-center justify-center cursor-pointer border-2 border-edwards-red rounded-xl bg-edwards-red text-white transition-all shadow-md scale-105">
-                            <span class="font-bold text-xl hand-font text-white">底層：治療決策</span>
+                        <div id="btn-funnel-bot" onclick="changeFunnel('bot')" class="w-3/5 h-14 flex items-center justify-center cursor-pointer border-2 border-edwards-red rounded-xl bg-edwards-red text-white transition-all opacity-40 hover:opacity-100 hover:scale-105">
+                            <span class="font-bold text-xl hand-font text-white">Therapy Awareness</span>
                         </div>
                     </div>
                     <div class="text-center text-[10px] text-edwards-gray font-bold mb-4">點擊上方漏斗階層查看細節</div>
@@ -254,7 +336,7 @@
                     <div id="funnel-details-box" class="p-4 border-2 rounded-xl shadow-[4px_4px_0_#C8102E] bg-red-50 border-edwards-red transform rotate-1 transition-all duration-300">
                         <h4 id="funnel-title" class="text-xl font-bold mb-3 border-b-2 border-dashed border-edwards-red pb-2 text-edwards-red transition-colors">❤️ 底層：治療決策 (Therapy Awareness)</h4>
                         <div class="space-y-3 text-sm font-medium">
-                            <p><strong><i class="fa-solid fa-users mr-1"></i> TA：</strong><span id="funnel-ta">已診斷出中重度瓣膜疾病，需手術之病人</span></p>
+                            <p><strong><i class="fa-solid fa-users mr-1"></i> TA：</strong><span id="funnel-ta">已診斷出瓣膜疾病必須治療之病人</span></p>
                             <p><strong><i class="fa-regular fa-comment-dots mr-1"></i> 訊息：</strong><span id="funnel-msg">了解手術必要性，信任醫師專業評估</span></p>
                             <p><strong><i class="fa-solid fa-bolt mr-1"></i> 行為：</strong><span id="funnel-action" class="text-edwards-red font-bold transition-colors">接受醫師建議療法</span></p>
                         </div>
@@ -262,18 +344,18 @@
                 </div>
 
                 <div class="sketch-box">
-                    <h3 class="text-xl font-bold mb-4 text-edwards-red border-b-2 border-dashed border-edwards-ink pb-2">💡 關鍵決策說明</h3>
+                    <h3 class="text-xl font-bold mb-4 text-edwards-red border-b-2 border-dashed border-edwards-ink pb-2">💡 關鍵決策</h3>
                     <ul class="space-y-4 text-sm font-medium list-check">
+                        <li><strong>訊息傳遞階段性：</strong>每一層都有明確的 CTA，確保訊息與需求完全匹配。</li>
                         <li><strong>鎖定「手術」為核心：</strong>目標讓病患看完網站後願意接受醫師建議的療法。</li>
                         <li><strong>避免訊息干擾：</strong>不提供過多選擇以免干擾決策。應專注於目前最適合的方案。</li>
-                        <li><strong>訊息傳遞階段性：</strong>每一層都有明確的 CTA，確保訊息與需求完全匹配。</li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <!-- 三、 永續戰略樞紐 (放射狀心智圖) -->
-        <section class="w-full pt-4">
+        <!-- 第三段：永續戰略樞紐 -->
+        <section id="sec-3" class="w-full pt-4 scroll-mt-24 reveal-section relative z-10">
             <div class="mb-10 text-center px-4">
                 <h2 class="text-3xl font-bold sketch-underline inline-block text-edwards-ink mb-4">三、永續戰略樞紐</h2>
                 <div class="max-w-2xl mx-auto">
@@ -283,20 +365,15 @@
                 </div>
             </div>
             
-            <!-- Desktop/Tablet 放射狀圖 (lg 以上顯示) -->
             <div class="relative w-full max-w-5xl mx-auto h-[750px] hidden lg:block">
-                <!-- 虛線連接線 (SVG) -->
                 <svg class="absolute inset-0 w-full h-full pointer-events-none z-0" style="stroke: #2D3436; stroke-width: 2.5; stroke-dasharray: 8 6; fill: none;">
-                    <!-- 左側 2 條線 -->
                     <line x1="20%" y1="30%" x2="50%" y2="50%" />
                     <line x1="20%" y1="70%" x2="50%" y2="50%" />
-                    <!-- 右側 3 條線 -->
                     <line x1="80%" y1="18%" x2="50%" y2="50%" />
                     <line x1="84%" y1="50%" x2="50%" y2="50%" />
                     <line x1="80%" y1="82%" x2="50%" y2="50%" />
                 </svg>
 
-                <!-- 中心節點 -->
                 <a href="https://www.dontfearofsurgery.com/" target="_blank" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 bg-white border-4 border-edwards-ink rounded-[255px_15px_225px_15px/15px_225px_15px_255px] p-8 shadow-[6px_6px_0_#C8102E] flex flex-col items-center text-center w-72 hover:scale-105 transition-transform cursor-pointer">
                     <i class="fa-solid fa-heart-pulse text-edwards-red text-5xl mb-3"></i>
                     <h3 class="text-2xl font-bold text-edwards-ink mb-1 hand-font">Don't Fear</h3>
@@ -305,7 +382,6 @@
                     <span class="text-sm font-bold hand-font transform -rotate-3 border-b-2 border-edwards-red text-edwards-red mt-2">了解越多，恐懼越少</span>
                 </a>
 
-                <!-- 周圍節點 1: 主題活動 (左上) -->
                 <a href="https://www.dontfearofsurgery.com/event-page" target="_blank" class="absolute top-[30%] left-[20%] transform -translate-x-1/2 -translate-y-1/2 rotate-1 w-56 bg-white border-2 border-edwards-ink rounded-[15px_225px_15px_255px/255px_15px_225px_15px] p-5 shadow-[4px_4px_0_#898D8D] flex flex-col items-center text-center hover:scale-105 transition-transform z-10 cursor-pointer">
                     <div class="flex relative mb-3">
                         <i class="fa-solid fa-calendar-days text-3xl text-edwards-ink"></i>
@@ -315,14 +391,12 @@
                     <p class="text-xs font-medium text-slate-600 leading-relaxed">最新資訊導流頁面</p>
                 </a>
 
-                <!-- 周圍節點 2: 重拾精彩 (左下) -->
                 <a href="https://www.dontfearofsurgery.com/regaining-a-wonderful-life" target="_blank" class="absolute top-[70%] left-[20%] transform -translate-x-1/2 -translate-y-1/2 -rotate-2 w-56 bg-white border-2 border-edwards-ink rounded-[255px_15px_225px_15px/15px_255px_15px_225px] p-5 shadow-[4px_4px_0_#898D8D] flex flex-col items-center text-center hover:scale-105 transition-transform z-10 cursor-pointer">
                     <i class="fa-solid fa-rainbow text-4xl text-edwards-red mb-3 opacity-80"></i>
                     <h4 class="font-bold text-xl mb-2 hand-font text-edwards-ink">重拾精彩</h4>
                     <p class="text-xs font-medium text-slate-600 leading-relaxed">術後復健與生活重建<br>病友真實經驗分享</p>
                 </a>
 
-                <!-- 周圍節點 3: 認識瓣膜 (右上) -->
                 <a href="https://www.dontfearofsurgery.com/understanding-heart-valves-article-1" target="_blank" class="absolute top-[18%] left-[80%] transform -translate-x-1/2 -translate-y-1/2 rotate-2 w-60 bg-white border-2 border-edwards-ink rounded-[255px_15px_225px_15px/15px_225px_15px_255px] p-5 shadow-[4px_4px_0_#898D8D] flex flex-col items-center text-center hover:scale-105 transition-transform z-10 cursor-pointer">
                     <div class="flex gap-2 mb-3">
                         <div class="w-12 h-12 rounded-full border-2 border-edwards-ink flex items-center justify-center bg-slate-100"><i class="fa-solid fa-gear text-2xl text-edwards-ink"></i></div>
@@ -333,7 +407,6 @@
                     <p class="text-[11px] text-blue-500 font-bold mt-2 bg-blue-50 px-2 py-1 rounded-md">•材質比較 •生活考量</p>
                 </a>
 
-                <!-- 周圍節點 4: 手術大哉問 (右中) -->
                 <a href="https://www.dontfearofsurgery.com/surgeryfaq" target="_blank" class="absolute top-[50%] left-[84%] transform -translate-x-1/2 -translate-y-1/2 -rotate-1 w-56 bg-white border-2 border-edwards-ink rounded-[255px_15px_225px_15px/15px_225px_15px_255px] p-5 shadow-[4px_4px_0_#898D8D] flex flex-col items-center text-center hover:scale-105 transition-transform z-10 cursor-pointer">
                     <div class="w-14 h-14 rounded-full border-2 border-edwards-ink flex items-center justify-center mb-3 bg-slate-50">
                         <i class="fa-solid fa-book-open-reader text-2xl text-edwards-ink"></i>
@@ -343,7 +416,6 @@
                     <p class="text-xs font-medium text-slate-600 leading-relaxed">常見問題解答<br>解碼手術流程與風險</p>
                 </a>
 
-                <!-- 周圍節點 5: 醫師怎麼說 (右下) -->
                 <a href="https://www.dontfearofsurgery.com/what-the-doctor-says" target="_blank" class="absolute top-[82%] left-[80%] transform -translate-x-1/2 -translate-y-1/2 rotate-1 w-56 bg-white border-2 border-edwards-ink rounded-[15px_225px_15px_255px/255px_15px_225px_15px] p-5 shadow-[4px_4px_0_#898D8D] flex flex-col items-center text-center hover:scale-105 transition-transform z-10 cursor-pointer">
                     <div class="w-14 h-14 rounded-full border-2 border-edwards-ink flex items-center justify-center mb-3 bg-red-50">
                         <i class="fa-solid fa-user-doctor text-2xl text-edwards-ink"></i>
@@ -353,7 +425,6 @@
                 </a>
             </div>
 
-            <!-- Mobile 版網格排列 (小於 lg 顯示) -->
             <div class="lg:hidden flex flex-col gap-6 items-center w-full mt-8">
                 <a href="https://www.dontfearofsurgery.com/" target="_blank" class="w-full max-w-sm bg-white border-4 border-edwards-ink rounded-[255px_15px_225px_15px/15px_225px_15px_255px] p-6 shadow-[6px_6px_0_#C8102E] flex flex-col items-center text-center mb-2 hover:-translate-y-1 transition-transform cursor-pointer">
                     <i class="fa-solid fa-heart-pulse text-edwards-red text-4xl mb-3"></i>
@@ -396,11 +467,15 @@
             </div>
         </section>
 
-        <!-- 四、 情感驅動核心 -->
-        <section class="mt-16 w-full mx-auto">
-            <div class="sketch-box bg-[#fff8f8] border-edwards-red max-w-4xl mx-auto">
-                <h2 class="text-2xl font-bold mb-4 sketch-underline inline-block">四、情感驅動核心</h2>
-                <div class="flex flex-col sm:flex-row gap-6 mb-4">
+        <!-- 第四段：情感驅動核心 -->
+        <section id="sec-4" class="mt-16 w-full mx-auto scroll-mt-24 reveal-section relative z-10">
+            <div class="sketch-box bg-[#fff8f8] border-edwards-red max-w-4xl mx-auto relative overflow-hidden">
+                <svg class="absolute -top-4 -right-2 w-32 h-32 text-edwards-red opacity-10 transform rotate-12 pointer-events-none" viewBox="0 0 100 100" fill="currentColor">
+                    <path d="M20 50 Q20 20 40 10 L45 20 Q35 30 35 50 L45 50 L45 80 L15 80 L15 50 Z M60 50 Q60 20 80 10 L85 20 Q75 30 75 50 L85 50 L85 80 L55 80 L55 50 Z" />
+                </svg>
+
+                <h2 class="text-2xl font-bold mb-4 sketch-underline inline-block relative z-10">四、情感驅動核心</h2>
+                <div class="flex flex-col sm:flex-row gap-6 mb-4 relative z-10">
                     <div class="shrink-0">
                         <img class="w-32 h-32 object-cover border-4 border-edwards-ink rounded-[15px_225px_15px_225px/255px_15px_225px_15px] shadow-md transform -rotate-2" 
                              src="https://lh3.googleusercontent.com/d/158NcIkP0d5szeHvJ1Tga32Gx6QLM_pj-" 
@@ -416,18 +491,16 @@
                         <p class="text-sm font-bold text-edwards-gray italic">「手術不是終點，而是起點」</p>
                     </div>
                 </div>
-                <p class="text-sm font-medium border-l-4 border-edwards-red pl-3 text-slate-700 leading-relaxed">
+                <p class="text-sm font-medium border-l-4 border-edwards-red pl-3 text-slate-700 leading-relaxed relative z-10">
                     透過 2007 年與 2021 年兩次手術的生命實證，打破「術後體力不支」的刻板印象。將感性的「生命實證」強力消除病患恐懼。
                 </p>
             </div>
         </section>
 
-        <!-- 五、 專案素材與露出系統整理 -->
-        <section>
-            <h2 class="text-3xl font-bold mb-4 sketch-underline inline-block text-center w-full">五、專案素材與露出系統整理</h2>
-            <p class="mb-8 text-center text-slate-600 font-medium max-w-3xl mx-auto">為完整記錄與檢視專案執行之廣泛能見度，以下系統性整理本專案於各大平台之素材與露出連結：</p>
+        <!-- 第五段：專案素材 -->
+        <section id="sec-5" class="scroll-mt-24 reveal-section relative z-10">
+            <h2 class="text-3xl font-bold mb-4 sketch-underline inline-block text-center w-full">五、專案素材與露出</h2>
             
-            <!-- 核心 YouTube 影片區 -->
             <div class="mb-12">
                 <div class="sketch-box bg-white overflow-hidden p-6">
                     <h3 class="font-bold text-2xl mb-6 flex items-center">
@@ -447,70 +520,200 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- 5.1 媒體報導與新聞露出 -->
+                <!-- 5.1 -->
                 <div class="sketch-box shadow-[4px_4px_0_#898D8D]">
                     <h3 class="text-xl font-bold mb-6 border-b-2 border-edwards-ink pb-2"><i class="fa-solid fa-newspaper mr-2 text-edwards-red"></i>5.1 媒體報導與新聞露出</h3>
-                    <div class="space-y-4">
-                        <a href="https://www.commonhealth.com.tw/article/93867" target="_blank" class="sketch-btn-outline w-full justify-between">
-                            <span class="text-left">康健雜誌 專文報導</span> <i class="fa-solid fa-link"></i>
+                    <div class="flex flex-col gap-3">
+                        <a href="https://www.commonhealth.com.tw/article/93867" target="_blank" class="flex items-center p-3 border-2 border-edwards-ink rounded-xl hover:-translate-y-1 transition-transform bg-green-50 shadow-sm">
+                            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center border-2 border-edwards-ink mr-3 shrink-0">
+                                <i class="fa-solid fa-leaf text-green-600 text-lg"></i>
+                            </div>
+                            <div class="flex-grow">
+                                <div class="font-bold text-sm text-edwards-ink">康健雜誌</div>
+                                <div class="text-[10px] text-slate-500 font-bold">Web Article / 專文報導</div>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-edwards-gray"></i>
                         </a>
-                        <a href="https://www.healthnews.com.tw/article/66344" target="_blank" class="sketch-btn-outline w-full justify-between">
-                            <span class="text-left">健康醫療網 新聞報導</span> <i class="fa-solid fa-link"></i>
+                        
+                        <a href="https://www.healthnews.com.tw/article/66344" target="_blank" class="flex items-center p-3 border-2 border-edwards-ink rounded-xl hover:-translate-y-1 transition-transform bg-teal-50 shadow-sm">
+                            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center border-2 border-edwards-ink mr-3 shrink-0">
+                                <i class="fa-solid fa-stethoscope text-teal-600 text-lg"></i>
+                            </div>
+                            <div class="flex-grow">
+                                <div class="font-bold text-sm text-edwards-ink">健康醫療網</div>
+                                <div class="text-[10px] text-slate-500 font-bold">Web Article / 新聞報導</div>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-edwards-gray"></i>
                         </a>
-                        <a href="https://www.facebook.com/commonhealth/posts/pfbid0YjWMp7oHXbonDQuL4P5TBN8ism35xSy4mFxiYYZHecD64Y8PGktQSZrPDnAGbwjUl" target="_blank" class="sketch-btn bg-[#1877F2] w-full justify-between border-edwards-ink text-white transition-all">
-                            <span class="text-left"><i class="fa-brands fa-facebook mr-2"></i>康健雜誌 FB 粉絲團貼文</span> <i class="fa-solid fa-link"></i>
+
+                        <a href="https://www.facebook.com/commonhealth/posts/pfbid0YjWMp7oHXbonDQuL4P5TBN8ism35xSy4mFxiYYZHecD64Y8PGktQSZrPDnAGbwjUl" target="_blank" class="flex items-center p-3 border-2 border-[#1877F2] rounded-xl hover:-translate-y-1 transition-transform bg-blue-50 shadow-[2px_2px_0_#1877F2]">
+                            <div class="w-10 h-10 bg-[#1877F2] rounded-full flex items-center justify-center border-2 border-edwards-ink mr-3 shrink-0">
+                                <i class="fa-brands fa-facebook-f text-white text-xl"></i>
+                            </div>
+                            <div class="flex-grow">
+                                <div class="font-bold text-sm text-[#1877F2]">康健雜誌 FB 粉絲團</div>
+                                <div class="text-[10px] text-slate-500 font-bold">Social Post / 官方貼文</div>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-[#1877F2]"></i>
                         </a>
                     </div>
                 </div>
 
-                <!-- 5.2 影音素材 (Shorts / Reels) -->
+                <!-- 5.2 -->
                 <div class="sketch-box shadow-[4px_4px_0_#898D8D]">
                     <h3 class="text-xl font-bold mb-6 border-b-2 border-edwards-ink pb-2"><i class="fa-solid fa-clapperboard mr-2 text-edwards-red"></i>5.2 影音素材 (Shorts / Reels)</h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <a href="https://www.facebook.com/reel/1816645019031835/" target="_blank" class="sketch-btn text-xs py-3 w-full text-center">FB Reel 1 (今健康)</a>
-                        <a href="https://www.facebook.com/reel/1827300094914698" target="_blank" class="sketch-btn text-xs py-3 w-full text-center">FB Reel 2 (愛長照)</a>
-                        <a href="https://www.facebook.com/reel/1590281222035930/" target="_blank" class="sketch-btn text-xs py-3 w-full text-center">FB Reel 3 (合作媒體)</a>
-                        <a href="https://www.instagram.com/reel/DX8mwoXjDKU/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank" class="sketch-btn text-xs py-3 bg-[#E1306C] w-full text-center">IG Reel (今健康)</a>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <a href="https://www.facebook.com/reel/1816645019031835/" target="_blank" class="bg-white border-2 border-edwards-ink p-1.5 rounded-[15px_255px_15px_225px/225px_15px_255px_15px] shadow-[4px_4px_0_#2D3436] transform rotate-1 hover:-translate-y-2 hover:rotate-0 transition-all group flex flex-col">
+                            <div class="relative w-full aspect-[9/16] rounded-xl border-2 border-edwards-ink overflow-hidden bg-slate-100">
+                                <div class="absolute inset-0 bg-gradient-to-br from-blue-600 to-blue-400 opacity-90 group-hover:scale-110 transition-transform duration-500"></div>
+                                <div class="absolute top-2 left-2 bg-white rounded-full w-7 h-7 flex items-center justify-center border-2 border-edwards-ink shadow-sm z-10">
+                                    <i class="fa-brands fa-facebook-f text-[#1877F2] text-sm"></i>
+                                </div>
+                                <div class="absolute inset-0 flex items-center justify-center z-10">
+                                    <div class="w-10 h-10 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-white/60 group-hover:bg-white group-hover:border-edwards-ink group-hover:scale-110 transition-all">
+                                        <i class="fa-solid fa-play text-white group-hover:text-edwards-red ml-1 transition-colors"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pt-2 pb-1 text-center">
+                                <h4 class="font-bold text-[11px] text-edwards-ink hand-font">今健康 Reel</h4>
+                            </div>
+                        </a>
+                        <a href="https://www.facebook.com/reel/1827300094914698" target="_blank" class="bg-white border-2 border-edwards-ink p-1.5 rounded-[255px_15px_225px_15px/15px_225px_15px_255px] shadow-[4px_4px_0_#2D3436] transform -rotate-2 hover:-translate-y-2 hover:rotate-0 transition-all group flex flex-col">
+                            <div class="relative w-full aspect-[9/16] rounded-xl border-2 border-edwards-ink overflow-hidden bg-slate-100">
+                                <div class="absolute inset-0 bg-gradient-to-br from-indigo-600 to-blue-500 opacity-90 group-hover:scale-110 transition-transform duration-500"></div>
+                                <div class="absolute top-2 left-2 bg-white rounded-full w-7 h-7 flex items-center justify-center border-2 border-edwards-ink shadow-sm z-10">
+                                    <i class="fa-brands fa-facebook-f text-[#1877F2] text-sm"></i>
+                                </div>
+                                <div class="absolute inset-0 flex items-center justify-center z-10">
+                                    <div class="w-10 h-10 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-white/60 group-hover:bg-white group-hover:border-edwards-ink group-hover:scale-110 transition-all">
+                                        <i class="fa-solid fa-play text-white group-hover:text-edwards-red ml-1 transition-colors"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pt-2 pb-1 text-center">
+                                <h4 class="font-bold text-[11px] text-edwards-ink hand-font">愛長照 Reel</h4>
+                            </div>
+                        </a>
+                        <a href="https://www.facebook.com/reel/1590281222035930/" target="_blank" class="bg-white border-2 border-edwards-ink p-1.5 rounded-[15px_225px_15px_255px/255px_15px_225px_15px] shadow-[4px_4px_0_#2D3436] transform rotate-2 hover:-translate-y-2 hover:rotate-0 transition-all group flex flex-col">
+                            <div class="relative w-full aspect-[9/16] rounded-xl border-2 border-edwards-ink overflow-hidden bg-slate-100">
+                                <div class="absolute inset-0 bg-gradient-to-br from-sky-500 to-teal-400 opacity-90 group-hover:scale-110 transition-transform duration-500"></div>
+                                <div class="absolute top-2 left-2 bg-white rounded-full w-7 h-7 flex items-center justify-center border-2 border-edwards-ink shadow-sm z-10">
+                                    <i class="fa-brands fa-facebook-f text-[#1877F2] text-sm"></i>
+                                </div>
+                                <div class="absolute inset-0 flex items-center justify-center z-10">
+                                    <div class="w-10 h-10 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-white/60 group-hover:bg-white group-hover:border-edwards-ink group-hover:scale-110 transition-all">
+                                        <i class="fa-solid fa-play text-white group-hover:text-edwards-red ml-1 transition-colors"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pt-2 pb-1 text-center">
+                                <h4 class="font-bold text-[11px] text-edwards-ink hand-font">合作媒體 Reel</h4>
+                            </div>
+                        </a>
+                        <a href="https://www.instagram.com/reel/DX8mwoXjDKU/" target="_blank" class="bg-white border-2 border-edwards-ink p-1.5 rounded-[255px_15px_225px_15px/15px_225px_15px_225px] shadow-[4px_4px_0_#2D3436] transform -rotate-1 hover:-translate-y-2 hover:rotate-0 transition-all group flex flex-col">
+                            <div class="relative w-full aspect-[9/16] rounded-xl border-2 border-edwards-ink overflow-hidden bg-slate-100">
+                                <div class="absolute inset-0 bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 opacity-90 group-hover:scale-110 transition-transform duration-500"></div>
+                                <div class="absolute top-2 left-2 bg-white rounded-full w-7 h-7 flex items-center justify-center border-2 border-edwards-ink shadow-sm z-10">
+                                    <i class="fa-brands fa-instagram text-[#E1306C] text-sm"></i>
+                                </div>
+                                <div class="absolute inset-0 flex items-center justify-center z-10">
+                                    <div class="w-10 h-10 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-white/60 group-hover:bg-white group-hover:border-edwards-ink group-hover:scale-110 transition-all">
+                                        <i class="fa-solid fa-play text-white group-hover:text-edwards-red ml-1 transition-colors"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pt-2 pb-1 text-center">
+                                <h4 class="font-bold text-[11px] text-edwards-ink hand-font">今健康 IG Reel</h4>
+                            </div>
+                        </a>
                     </div>
                 </div>
 
-                <!-- 5.3 官方與關鍵人物發文 -->
+                <!-- 5.3 -->
                 <div class="sketch-box shadow-[4px_4px_0_#898D8D]">
                     <h3 class="text-xl font-bold mb-6 border-b-2 border-edwards-ink pb-2"><i class="fa-solid fa-bullhorn mr-2 text-edwards-red"></i>5.3 官方與關鍵人物發文</h3>
                     <div class="space-y-4">
-                        <a href="https://www.facebook.com/unilions/posts/pfbid02bEkhAjn5Jw5SGTigVxcwGXK8VBvDW9SHfPo7jYRgpV7a4fd7hbdL7KGY2au6xzxPl?locale=zh_TW" target="_blank" class="sketch-btn bg-[#1877F2] w-full justify-start border-edwards-ink text-white transition-all">
-                            <i class="fa-brands fa-facebook mr-3 text-xl"></i> 統一獅球團 官方發文
+                        <a href="https://www.facebook.com/unilions/posts/pfbid02bEkhAjn5Jw5SGTigVxcwGXK8VBvDW9SHfPo7jYRgpV7a4fd7hbdL7KGY2au6xzxPl" target="_blank" class="block border-2 border-[#1877F2] rounded-xl p-4 bg-white relative hover:-translate-y-1 transition-transform shadow-[3px_3px_0_#1877F2]">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center border-2 border-edwards-ink shrink-0">
+                                    <i class="fa-solid fa-baseball-bat-ball text-orange-600"></i>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-sm text-[#1877F2]">統一獅官方粉絲團</div>
+                                    <div class="text-[10px] text-slate-500 font-bold">Facebook Post</div>
+                                </div>
+                                <i class="fa-brands fa-facebook text-[#1877F2] text-2xl ml-auto"></i>
+                            </div>
                         </a>
-                        <a href="https://www.facebook.com/bincoach11/posts/pfbid0msFEa2A1PSryaWghG9JnsebfaVtfNTiKyKTxSszxMq5SpFNdvu43tT369WeHhyuBl" target="_blank" class="sketch-btn bg-[#1877F2] w-full justify-start border-edwards-ink text-white transition-all">
-                            <i class="fa-brands fa-facebook mr-3 text-xl"></i> 餅總 (林岳平) 粉絲團發文
+
+                        <a href="https://www.facebook.com/bincoach11/posts/pfbid0msFEa2A1PSryaWghG9JnsebfaVtfNTiKyKTxSszxMq5SpFNdvu43tT369WeHhyuBl" target="_blank" class="block border-2 border-[#1877F2] rounded-xl p-4 bg-white relative hover:-translate-y-1 transition-transform shadow-[3px_3px_0_#1877F2]">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center border-2 border-edwards-ink shrink-0">
+                                    <i class="fa-solid fa-user-tie text-red-600"></i>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-sm text-[#1877F2]">餅總 (林岳平)</div>
+                                    <div class="text-[10px] text-slate-500 font-bold">Facebook Post</div>
+                                </div>
+                                <i class="fa-brands fa-facebook text-[#1877F2] text-2xl ml-auto"></i>
+                            </div>
                         </a>
                     </div>
                 </div>
 
-                <!-- 5.4 社群論壇討論與擴散 -->
+                <!-- 5.4 -->
                 <div class="sketch-box shadow-[4px_4px_0_#898D8D]">
                     <h3 class="text-xl font-bold mb-6 border-b-2 border-edwards-ink pb-2"><i class="fa-solid fa-share-nodes mr-2 text-edwards-red"></i>5.4 社群論壇討論與擴散</h3>
-                    <div class="space-y-3">
-                        <a href="https://www.ptt.cc/bbs/Baseball/M.1776136728.A.578.html" target="_blank" class="sketch-btn-outline w-full justify-between py-2 px-3 text-xs">
-                            <span>PTT 棒球板 (Baseball) 討論</span> <i class="fa-solid fa-comments"></i>
-                        </a>
-                        <div class="grid grid-cols-2 gap-2">
-                            <a href="https://www.threads.com/@pslienhsiaowei/post/DXGlHXViX0P?xmt=AQF0YPplpTS3ZKdq5xfXV7ULRgIOcf_LRFgyA620kt_4uVQeTLmN7hLFwDkWxTjOr4bT6xov&slof=1" target="_blank" class="sketch-btn-outline text-[10px] py-2 px-1 bg-slate-50 text-center">Threads 討論串 1</a>
-                            <a href="https://www.threads.com/@tainanhitsuji/post/DXHTi-dmQX3?xmt=AQF0bPtQpTnetto7jdM3upYGZJtO3lwGXraJ5ucZw5uUUg_hhgVJ0XpfoQpD0GQSPO7pIW4&slof=1" target="_blank" class="sketch-btn-outline text-[10px] py-2 px-1 bg-slate-50 text-center">Threads 討論串 2</a>
-                            <a href="https://www.threads.com/@kobanachiang/post/DXG5_PaAae6?xmt=AQF0om9wslVRFRNr92xW3epU5k_0fSalSN5wG_kecBgi7t-AiVwMN-UUH99axfclEDS4LbVj&slof=1" target="_blank" class="sketch-btn-outline text-[10px] py-2 px-1 bg-slate-50 text-center">Threads 討論串 3</a>
-                            <a href="https://www.threads.com/@steffi_hung/post/DXGnFhtjt15?xmt=AQF0lPYAGfOz5Y8DJaDe7U5ekQqNZ3V7tQli4ceyRrNvIY0JruYelssFgORjLJOjrkHnzyo&slof=1" target="_blank" class="sketch-btn-outline text-[10px] py-2 px-1 bg-slate-50 text-center">Threads 討論串 4</a>
+                    
+                    <a href="https://www.ptt.cc/bbs/Baseball/M.1776136728.A.578.html" target="_blank" class="block border-2 border-edwards-ink rounded-xl p-3 bg-slate-900 text-white hover:bg-slate-800 transition-colors mb-4 relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==')] opacity-50"></div>
+                        <div class="flex items-center gap-2 relative z-10">
+                            <div class="bg-blue-600 text-white text-[10px] px-1.5 py-0.5 rounded-sm font-bold border border-blue-400">爆</div>
+                            <span class="text-sm font-bold text-cyan-400 group-hover:text-cyan-300 transition-colors">[討論] PTT 棒球板討論串</span>
+                            <i class="fa-solid fa-terminal ml-auto text-slate-500"></i>
                         </div>
+                    </a>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <a href="https://www.threads.com/@pslienhsiaowei/post/DXGlHXViX0P" target="_blank" class="border-2 border-slate-300 hover:border-black rounded-2xl p-3 bg-white hover:-translate-y-1 transition-all flex flex-col gap-1 shadow-sm">
+                            <div class="flex justify-between items-center">
+                                <i class="fa-brands fa-threads text-xl text-black"></i>
+                                <span class="text-[10px] text-slate-400 font-medium">@pslien...</span>
+                            </div>
+                            <div class="text-xs font-bold mt-1 text-edwards-ink">Threads 討論串 1</div>
+                        </a>
+                        <a href="https://www.threads.com/@tainanhitsuji/post/DXHTi-dmQX3" target="_blank" class="border-2 border-slate-300 hover:border-black rounded-2xl p-3 bg-white hover:-translate-y-1 transition-all flex flex-col gap-1 shadow-sm">
+                            <div class="flex justify-between items-center">
+                                <i class="fa-brands fa-threads text-xl text-black"></i>
+                                <span class="text-[10px] text-slate-400 font-medium">@tainan...</span>
+                            </div>
+                            <div class="text-xs font-bold mt-1 text-edwards-ink">Threads 討論串 2</div>
+                        </a>
+                        <a href="https://www.threads.com/@kobanachiang/post/DXG5_PaAae6" target="_blank" class="border-2 border-slate-300 hover:border-black rounded-2xl p-3 bg-white hover:-translate-y-1 transition-all flex flex-col gap-1 shadow-sm">
+                            <div class="flex justify-between items-center">
+                                <i class="fa-brands fa-threads text-xl text-black"></i>
+                                <span class="text-[10px] text-slate-400 font-medium">@kobana...</span>
+                            </div>
+                            <div class="text-xs font-bold mt-1 text-edwards-ink">Threads 討論串 3</div>
+                        </a>
+                        <a href="https://www.threads.com/@steffi_hung/post/DXGnFhtjt15" target="_blank" class="border-2 border-slate-300 hover:border-black rounded-2xl p-3 bg-white hover:-translate-y-1 transition-all flex flex-col gap-1 shadow-sm">
+                            <div class="flex justify-between items-center">
+                                <i class="fa-brands fa-threads text-xl text-black"></i>
+                                <span class="text-[10px] text-slate-400 font-medium">@steffi...</span>
+                            </div>
+                            <div class="text-xs font-bold mt-1 text-edwards-ink">Threads 討論串 4</div>
+                        </a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 六、 民眾自發性討論與社群共鳴 analysis -->
-        <section class="pt-6">
+        <!-- 第六段：社群分析 -->
+        <section id="sec-6" class="pt-6 scroll-mt-24 reveal-section relative z-10">
             <h2 class="text-2xl font-bold mb-8 sketch-underline inline-block text-edwards-ink">六、民眾自發性討論與社群共鳴分析</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-                <!-- 左側：留言分析便利貼 -->
                 <div class="grid grid-cols-1 gap-5">
                     <div class="p-5 bg-white border-2 border-edwards-ink rounded-[15px_225px_15px_255px/255px_15px_225px_15px] shadow-[4px_4px_0_#898D8D] transform -rotate-1 hover:-translate-y-1 transition-transform cursor-default">
                         <div class="font-bold text-edwards-red mb-1 text-lg">❤️ 建立手術勇氣</div>
@@ -530,7 +733,6 @@
                     </div>
                 </div>
                 
-                <!-- 右側：Shorts 影片嵌入 -->
                 <div class="flex flex-col items-center">
                     <h3 class="font-bold mb-4 text-edwards-ink text-center text-xl hand-font"><i class="fa-brands fa-youtube mr-2 text-edwards-red"></i>社群熱烈迴響短影音</h3>
                     <div class="relative w-full max-w-[280px] aspect-[9/16] overflow-hidden border-4 border-edwards-ink rounded-[15px_255px_15px_225px/225px_15px_255px_15px] bg-black shadow-[6px_6px_0_#C8102E] transform rotate-2">
@@ -548,42 +750,62 @@
             </div>
         </section>
 
-        <!-- 七、 全平台曝光實績總和 (自由排版設計) -->
-        <section class="pt-8">
+        <!-- 第七段：曝光總和 -->
+        <section id="sec-7" class="pt-8 scroll-mt-24 reveal-section relative z-10">
             <div class="mb-8 text-center">
                 <h2 class="text-3xl font-bold sketch-underline inline-block text-edwards-ink">七、全平台曝光實績總和</h2>
             </div>
             
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6 px-4">
-                <div class="bg-white border-2 border-edwards-ink p-6 rounded-[255px_15px_225px_15px/15px_225px_15px_255px] shadow-[4px_4px_0_#C8102E] transform -rotate-2 text-center hover:-translate-y-1 transition-transform flex flex-col justify-center cursor-default">
+                <div class="bg-white border-2 border-edwards-ink p-6 rounded-[255px_15px_225px_15px/15px_225px_15px_255px] shadow-[4px_4px_0_#C8102E] transform -rotate-2 text-center hover:-translate-y-1 transition-transform flex flex-col justify-center cursor-default relative group">
                     <p class="text-sm font-bold text-slate-500 mb-2">總影音觀看</p>
-                    <p class="text-4xl font-black text-edwards-red hand-font">110萬+</p>
-                    <p class="text-[11px] mt-3 text-slate-500 font-bold leading-tight">YouTube 26萬+<br>IG 36萬+<br>Threads 30萬+<br>GDN 41萬+</p>
+                    <div class="relative inline-block mx-auto">
+                        <p class="text-4xl font-black text-edwards-red hand-font relative z-10">226萬+</p>
+                        <svg class="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)] text-red-200 z-0 transform group-hover:scale-110 transition-transform duration-300 pointer-events-none" viewBox="0 0 100 50" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+                            <path d="M10 25 C10 5 90 5 90 25 C90 45 10 45 15 20" />
+                        </svg>
+                    </div>
+                    <p class="text-[11px] mt-3 text-slate-500 font-bold leading-tight">YouTube 104萬+<br>META 122萬+</p>
                 </div>
-                <div class="bg-white border-2 border-edwards-ink p-6 rounded-[15px_255px_15px_225px/225px_15px_255px_15px] shadow-[4px_4px_0_#2D3436] transform rotate-1 text-center hover:-translate-y-1 transition-transform flex flex-col justify-center cursor-default">
+                <div class="bg-white border-2 border-edwards-ink p-6 rounded-[15px_255px_15px_225px/225px_15px_255px_15px] shadow-[4px_4px_0_#2D3436] transform rotate-1 text-center hover:-translate-y-1 transition-transform flex flex-col justify-center cursor-default relative group">
                     <p class="text-sm font-bold text-slate-500 mb-2">總社群互動</p>
-                    <p class="text-4xl font-black text-edwards-red hand-font">32,000+</p>
+                    <div class="relative inline-block mx-auto">
+                        <p class="text-4xl font-black text-edwards-red hand-font relative z-10">32,000+</p>
+                        <svg class="absolute -bottom-2 left-0 w-full h-4 text-red-200 z-0 transform group-hover:-rotate-2 transition-transform duration-300 pointer-events-none" viewBox="0 0 100 20" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round">
+                            <path d="M5 10 Q 50 15 95 5" />
+                        </svg>
+                    </div>
                 </div>
-                <div class="bg-white border-2 border-edwards-ink p-6 rounded-[255px_15px_225px_15px/15px_225px_15px_255px] shadow-[4px_4px_0_#2D3436] transform -rotate-1 text-center hover:-translate-y-1 transition-transform flex flex-col justify-center cursor-default">
+                <div class="bg-white border-2 border-edwards-ink p-6 rounded-[255px_15px_225px_15px/15px_225px_15px_255px] shadow-[4px_4px_0_#2D3436] transform -rotate-1 text-center hover:-translate-y-1 transition-transform flex flex-col justify-center cursor-default relative group">
                     <p class="text-sm font-bold text-slate-500 mb-2">GA4 使用者</p>
-                    <p class="text-4xl font-black text-edwards-red hand-font">7,370</p>
+                    <div class="relative inline-block mx-auto">
+                        <p class="text-4xl font-black text-edwards-red hand-font relative z-10">2.4萬+</p>
+                        <svg class="absolute -bottom-3 left-0 w-full h-6 text-red-200 z-0 transform group-hover:scale-105 transition-transform duration-300 pointer-events-none" viewBox="0 0 100 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+                            <path d="M5 10 Q 20 0 35 10 T 65 10 T 95 10" />
+                        </svg>
+                    </div>
                     <p class="text-[11px] mt-2 text-slate-500 font-bold">99% 為新使用者</p>
                 </div>
-                <div class="bg-white border-2 border-edwards-ink p-6 rounded-[15px_255px_15px_225px/225px_15px_255px_15px] shadow-[4px_4px_0_#2D3436] transform rotate-2 text-center hover:-translate-y-1 transition-transform flex flex-col justify-center cursor-default">
+                <div class="bg-white border-2 border-edwards-ink p-6 rounded-[15px_255px_15px_225px/225px_15px_255px_15px] shadow-[4px_4px_0_#2D3436] transform rotate-2 text-center hover:-translate-y-1 transition-transform flex flex-col justify-center cursor-default relative group">
                     <p class="text-sm font-bold text-slate-500 mb-2">SEM 點擊率</p>
-                    <p class="text-4xl font-black text-edwards-red hand-font">3.33%</p>
-                    <p class="text-[11px] mt-2 text-slate-500 font-bold">遠高於醫療產業平均</p>
+                    <div class="relative inline-block mx-auto">
+                        <p class="text-4xl font-black text-edwards-red hand-font relative z-10">3.33%</p>
+                        <svg class="absolute -top-3 -right-6 w-8 h-8 text-yellow-300 z-0 transform group-hover:rotate-45 transition-transform duration-300 pointer-events-none animate-doodle" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M50 10 L60 40 L90 40 L65 60 L75 90 L50 70 L25 90 L35 60 L10 40 L40 40 Z" />
+                        </svg>
+                    </div>
+                    <p class="text-[11px] mt-2 text-slate-500 font-bold">高於醫療產業平均</p>
                 </div>
             </div>
             
             <div class="mt-10 bg-red-50 border-2 border-edwards-red p-6 rounded-[15px_225px_15px_255px/255px_15px_225px_15px] max-w-3xl mx-auto shadow-[4px_4px_0_#C8102E] transform rotate-1">
-                <p class="mb-3 text-edwards-ink font-medium"><i class="fa-solid fa-chart-line mr-2 text-edwards-red"></i> <strong>YouTube VTR：</strong>可略過廣告之觀看率達 <strong>131%</strong>，受眾有重看行為。</p>
-                <p class="text-edwards-ink font-medium"><i class="fa-solid fa-link mr-2 text-edwards-red"></i> <strong>關鍵流量：</strong>KOL 專屬頁面導流佔總體流量約 <strong>44%</strong>，導流策略極為成功。</p>
+                <p class="mb-3 text-edwards-ink font-medium"><i class="fa-solid fa-chart-line mr-2 text-edwards-red"></i> <strong>YouTube VTR：</strong>可略過廣告之觀看率達 <strong>199.8%</strong>，受眾有重看行為。</p>
+                <p class="text-edwards-ink font-medium"><i class="fa-solid fa-link mr-2 text-edwards-red"></i> <strong>關鍵流量：</strong>KOL 專屬頁面導流佔總體流量約 <strong>65%</strong>，導流策略極為成功。</p>
             </div>
         </section>
 
-        <!-- 八、 線下整合與診間深耕 -->
-        <section class="pt-8">
+        <!-- 第八、九、十、十一 段：線下與結語 -->
+        <section id="sec-8" class="pt-8 scroll-mt-24 reveal-section relative z-10">
             <h2 class="text-2xl font-bold mb-6 sketch-underline inline-block text-edwards-ink">八、線下整合與診間深耕 (Offline Integration)</h2>
             <p class="mb-6 text-base font-medium text-slate-600">同步強化實體院所的「最後一步」觸及，在病患最焦慮的決策點（醫院場域）發酵。</p>
             
@@ -605,7 +827,6 @@
 
                 <div class="flex justify-center md:justify-end mt-4 md:mt-0">
                     <div class="sketch-box p-3 transform rotate-2 w-full max-w-md shadow-[6px_6px_0_#898D8D]">
-                        <!-- 使用 lh3.googleusercontent.com 格式以獲取更穩定的讀取 -->
                         <img src="https://lh3.googleusercontent.com/d/1L39ysjbuFw0VIAlNU4QfXkrcfMiYlhkd" 
                              alt="線下整合與診間深耕實績" 
                              class="w-full h-auto rounded-lg border-2 border-edwards-ink object-cover" 
@@ -616,8 +837,7 @@
             </div>
         </section>
 
-        <!-- 九、 專案後續規劃 & 十、 戰略協作 -->
-        <section class="pt-8 space-y-12">
+        <section id="sec-9" class="pt-8 space-y-12 scroll-mt-24 reveal-section relative z-10">
             <div>
                 <h2 class="text-2xl font-bold mb-5 sketch-underline inline-block text-edwards-ink">九、專案後續規劃</h2>
                 <p class="text-base leading-relaxed font-medium text-slate-700 bg-white p-6 border-2 border-edwards-ink rounded-[255px_15px_225px_15px/15px_225px_15px_255px] shadow-[4px_4px_0_#898D8D] transform -rotate-1">
@@ -633,21 +853,51 @@
             </div>
         </section>
 
-        <!-- 十一、 結語 -->
-        <section class="text-center pt-16 pb-10">
+        <section id="sec-11" class="text-center pt-16 pb-10 scroll-mt-24 reveal-section relative z-10">
             <h2 class="text-3xl font-bold mb-6 hand-font text-edwards-ink inline-block border-b-4 border-edwards-red pb-2">十一、結語 (Conclusion)</h2>
             <p class="text-lg md:text-xl text-edwards-ink font-bold mx-auto leading-relaxed max-w-4xl text-justify md:text-center mt-4">
                 這不僅是一次跨部門的突破，更是 SURG 長遠發展藍圖中的第一步。未來期待藉由專案持續發酵，聽到更多醫師正面回饋，並進一步帶動臨床上更明確的<strong class="text-edwards-red underline decoration-wavy underline-offset-4">產品指定使用率 (Brand Preference / Request)</strong>，在拯救生命的同時，創造無可取代的商業增長動能。
             </p>
+            
+            <div class="mt-10 mx-auto max-w-4xl sketch-box p-3 transform rotate-1 shadow-[6px_6px_0_#898D8D]">
+                <img src="https://lh3.googleusercontent.com/d/1KZ0UKXxef_ZEflx2-lTYY06cM-QwIM2y" 
+                     alt="結語配圖" 
+                     class="w-full h-auto rounded-lg border-2 border-edwards-ink object-cover" 
+                     referrerpolicy="no-referrer"
+                     onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop';">
+            </div>
         </section>
+
+        <!-- ================= 第十二段：互動挑戰遊戲引導 ================= -->
+        <section id="sec-game-promo" class="pt-16 pb-10 scroll-mt-24 relative z-10 border-t-4 border-dashed border-slate-300 mt-10 text-center">
+            <h2 class="text-4xl font-bold mb-4 hand-font text-edwards-ink inline-block">
+                <i class="fa-solid fa-gamepad text-edwards-red mr-2"></i>十二、互動挑戰
+            </h2>
+            <p class="text-lg text-slate-600 font-bold mb-8">全球瓣膜保衛戰 - 20秒極限挑戰已獨立開啟新頁面！</p>
+            
+            <!-- ★ 注意這裡：改為 ./game.html -->
+            <a href="./game.html" class="sketch-btn text-2xl py-4 px-8 animate-bounce inline-flex">
+                <i class="fa-solid fa-bolt mr-3"></i> 立即前往挑戰
+            </a>
+        </section>
+
     </main>
 
-    <footer class="py-8 text-center text-slate-400 font-bold text-xs bg-white border-t-4 border-edwards-ink">
-        <p>© 2026 Edwards Lifesciences Corporation. 拯救更多生命。</p>
-        <p class="mt-2 text-edwards-red hand-font text-lg tracking-wide">SURG 長遠發展藍圖中的關鍵第一步</p>
+    <!-- ================= 頁尾 Footer ================= -->
+    <footer class="py-8 text-center text-slate-400 font-bold text-xs bg-white border-t-4 border-edwards-ink relative z-10 overflow-hidden">
+        <svg class="absolute -bottom-10 left-1/2 -translate-x-1/2 w-48 h-48 text-red-50 opacity-60 z-0 pointer-events-none" viewBox="0 0 100 100" fill="currentColor">
+            <path d="M50 85 C 20 60, 10 40, 10 25 C 10 10, 30 5, 50 20 C 70 5, 90 10, 90 25 C 90 40, 80 60, 50 85 Z" />
+        </svg>
+
+        <div class="relative z-10">
+            <p>© 2026 Edwards Lifesciences Corporation. Patient First。</p>
+            <p class="mt-2 text-edwards-red hand-font text-lg tracking-wide">SURG 長遠發展藍圖中的關鍵第一步</p>
+        </div>
     </footer>
 
+    <!-- ================= 互動腳本區 ================= -->
     <script>
+        // 報告部分的漏斗切換邏輯
         const funnelData = {
             top: {
                 title: "🛡️ 頂層：廣泛預防 (Disease Awareness)",
@@ -671,7 +921,7 @@
             },
             bot: {
                 title: "❤️ 底層：治療決策 (Therapy Awareness)",
-                ta: "已診斷出中重度瓣膜疾病之病人",
+                ta: "已診斷出瓣膜疾病必須治療之病人",
                 msg: "了解手術必要性，信任外科醫師專業評估",
                 action: "接受醫師建議療法",
                 titleColor: "text-edwards-red",
@@ -706,11 +956,79 @@
             }
         }
 
-        // Initialize with bottom funnel active
-        document.addEventListener('DOMContentLoaded', () => {
-            if (document.getElementById('btn-funnel-bot')) {
-                changeFunnel('bot');
+        // 手機版目錄選單切換邏輯
+        function toggleMobileMenu() {
+            const modal = document.getElementById('mobile-toc-modal');
+            const sheet = document.getElementById('mobile-toc-sheet');
+            
+            if (modal.classList.contains('pointer-events-none')) {
+                modal.classList.remove('pointer-events-none');
+                modal.classList.remove('opacity-0');
+                sheet.classList.remove('translate-y-full');
+            } else {
+                modal.classList.add('opacity-0');
+                sheet.classList.add('translate-y-full');
+                setTimeout(() => { modal.classList.add('pointer-events-none'); }, 300);
             }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (document.getElementById('btn-funnel-top')) changeFunnel('top');
+
+            const backToTopBtn = document.getElementById('back-to-top');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+                    backToTopBtn.classList.add('opacity-100', 'translate-y-0');
+                } else {
+                    backToTopBtn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+                    backToTopBtn.classList.remove('opacity-100', 'translate-y-0');
+                }
+            });
+
+            document.querySelectorAll('a[href^="#sec-"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        const modal = document.getElementById('mobile-toc-modal');
+                        if (!modal.classList.contains('pointer-events-none')) { toggleMobileMenu(); }
+                    }
+                });
+            });
+
+            const sections = document.querySelectorAll('.reveal-section');
+            const navLinks = document.querySelectorAll('.toc-link');
+
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); } });
+            }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+            sections.forEach(sec => revealObserver.observe(sec));
+
+            const spyObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const targetId = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.remove('text-edwards-red', 'border-edwards-red', 'scale-105', 'font-black', 'bg-red-50');
+                            link.classList.add('text-slate-500', 'border-transparent');
+                            if (link.getAttribute('data-target') === targetId) {
+                                link.classList.remove('text-slate-500', 'border-transparent');
+                                link.classList.add('text-edwards-red', 'border-edwards-red', 'scale-105', 'font-black');
+                                if(targetId === 'sec-game') link.classList.add('bg-red-50');
+                            }
+                        });
+                    }
+                });
+            }, { threshold: 0.2, rootMargin: '-20% 0px -60% 0px' }); 
+            document.querySelectorAll('section[id]').forEach(sec => spyObserver.observe(sec));
+            
+            const modalOverlay = document.getElementById('mobile-toc-modal');
+            modalOverlay.addEventListener('click', (e) => {
+                if(e.target === modalOverlay) toggleMobileMenu();
+            });
         });
     </script>
 </body>
