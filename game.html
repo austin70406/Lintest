@@ -75,7 +75,11 @@
 
     <header class="w-full bg-white border-b-4 border-edwards-ink shadow-sm p-4 flex justify-between items-center sticky top-0 z-50">
         <div class="flex items-center gap-3">
-            <img class="h-6 md:h-8 object-contain" src="https://www.edwards.com/themes/custom/edwards/logo.svg" alt="Edwards Logo">
+            <img class="h-8 md:h-10 object-contain" 
+                 src="https://lh3.googleusercontent.com/d/1QJl_AerGZd0jRqOIZY-rCVVe6U67pmJM" 
+                 alt="Edwards Logo" 
+                 referrerpolicy="no-referrer"
+                 onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/4/4b/Edwards_Lifesciences.svg';">
             <span class="font-bold text-edwards-ink hidden sm:inline border-l-2 border-slate-300 pl-3">互動挑戰區</span>
         </div>
         <a href="./index.html" class="text-xs font-bold text-edwards-ink border-2 border-edwards-ink px-3 py-1.5 rounded-full hover:bg-slate-50 shadow-[2px_2px_0_#2D3436]">
@@ -83,57 +87,61 @@
         </a>
     </header>
 
-    <main class="flex-grow p-4 w-full max-w-5xl mx-auto flex flex-col items-center">
-        <div class="text-center mb-6 mt-2 w-full">
+    <main class="flex-grow p-4 w-full max-w-6xl mx-auto flex flex-col items-center">
+        <div class="text-center mb-6 mt-4 w-full">
+            <img class="h-20 md:h-24 object-contain mx-auto mb-6" 
+                 src="https://lh3.googleusercontent.com/d/1QJl_AerGZd0jRqOIZY-rCVVe6U67pmJM" 
+                 alt="Edwards Logo" 
+                 referrerpolicy="no-referrer"
+                 onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/4/4b/Edwards_Lifesciences.svg';">
+            
             <h1 class="text-3xl md:text-5xl font-bold hand-font text-edwards-ink">Global Valve Defender</h1>
             <h2 class="text-sm md:text-xl font-bold text-edwards-gray">全球瓣膜保衛戰 - 20秒極限挑戰</h2>
         </div>
 
         <div id="loading-screen" class="sketch-box flex flex-col items-center justify-center py-12 w-full max-w-md mx-auto">
             <i class="fa-solid fa-heart-pulse text-edwards-red text-5xl animate-pulse mb-4"></i>
-            <p class="font-bold text-lg hand-font">系統連線中...</p>
+            <p class="font-bold text-lg hand-font">正在連接總部資料庫...</p>
         </div>
 
-        <div id="main-content" class="hidden w-full flex flex-col lg:flex-row gap-6 pb-10">
-            
+        <div id="main-content" class="hidden w-full flex flex-col lg:flex-row gap-6 pb-12">
             <div class="flex-1 flex flex-col gap-6">
-                
-                <div id="login-screen" class="sketch-box flex flex-col items-center justify-center p-6 w-full">
+                <div id="login-screen" class="sketch-box flex flex-col items-center justify-center p-8 w-full">
                     <i class="fa-solid fa-user-nurse text-edwards-red text-4xl mb-3"></i>
                     <h3 class="text-xl font-bold mb-1">報到！護心使者</h3>
-                    <p class="text-gray-400 text-xs mb-6">輸入代號即可開始挑戰</p>
+                    <p class="text-gray-400 text-xs mb-6">請輸入本次挑戰的代號</p>
                     <input type="text" id="input-nickname" maxlength="10" placeholder="輸入暱稱..." class="sketch-input mb-4" autocomplete="off">
-                    <button id="btn-start" class="sketch-btn text-lg w-full py-2.5">確認並進入</button>
+                    <button id="btn-start" class="sketch-btn text-lg w-full py-3">進入挑戰</button>
                 </div>
 
-                <div id="game-screen" class="hidden sketch-box bg-[#fff8f8] flex-col items-center justify-between p-4 min-h-[400px]">
+                <div id="game-screen" class="hidden sketch-box bg-[#fff8f8] flex-col items-center justify-between p-4 min-h-[420px]">
                     <div class="text-center w-full bg-white/80 rounded-xl p-3 border-2 border-dashed border-edwards-ink relative mb-4">
                         <div class="absolute -top-3 -right-1 bg-yellow-400 px-2 py-0.5 rounded-full border-2 border-edwards-ink font-bold text-[10px] shadow-sm">
-                            個人紀錄: <span id="display-high-score">0</span>
+                            個人最高紀錄: <span id="display-high-score">0</span>
                         </div>
                         <p id="display-name" class="font-bold text-edwards-ink text-sm">Player</p>
                         <div class="text-xl font-mono font-black" id="display-time">20.0s</div>
                         <div class="text-6xl font-black text-edwards-red hand-font" id="display-score">0</div>
                     </div>
 
-                    <div id="valve-btn" class="valve-core animate-heartbeat w-40 h-40 md:w-52 md:h-52 rounded-full border-4 border-edwards-ink bg-white flex items-center justify-center shadow-[6px_6px_0_#C8102E] my-4">
-                        <i class="fa-solid fa-heart text-edwards-red text-[7rem] md:text-[9rem]"></i>
+                    <div id="valve-btn" class="valve-core animate-heartbeat w-44 h-44 md:w-56 md:h-56 rounded-full border-4 border-edwards-ink bg-white flex items-center justify-center shadow-[6px_6px_0_#C8102E] my-4">
+                        <i class="fa-solid fa-heart text-edwards-red text-[8rem] md:text-[10rem]"></i>
                     </div>
 
-                    <div class="w-full flex justify-center min-h-[50px]">
-                        <button id="btn-start-session" class="sketch-btn text-lg px-8 py-2.5 w-full max-w-[240px] animate-bounce">開始 20s 挑戰</button>
-                        <p id="game-instruction" class="hidden font-bold text-lg text-edwards-red animate-pulse">瘋狂連點！</p>
+                    <div class="w-full flex justify-center min-h-[60px]">
+                        <button id="btn-start-session" class="sketch-btn text-lg px-8 py-3 w-full max-w-[260px] animate-bounce">開始 20s 挑戰</button>
+                        <p id="game-instruction" class="hidden font-bold text-lg text-edwards-red animate-pulse">瘋狂點擊心臟！</p>
                     </div>
                 </div>
             </div>
 
-            <div class="sketch-box w-full lg:w-[380px] flex flex-col p-4">
-                <h3 class="text-lg font-bold border-b-2 border-edwards-ink mb-3 pb-2">
-                    全球即時排行榜 
+            <div class="sketch-box w-full lg:w-[420px] flex flex-col p-4">
+                <h3 class="text-xl font-bold border-b-2 border-edwards-ink mb-3 pb-2">
+                    全球即時英雄榜 
                     <span id="sync-status" class="text-[9px] text-green-600 ml-2 hidden">更新中...</span>
-                    <span id="online-count" class="text-[10px] float-right text-gray-400">讀取中</span>
+                    <span id="online-count" class="text-[10px] float-right text-gray-400">連線中</span>
                 </h3>
-                <div id="leaderboard-container" class="flex-1 overflow-y-auto space-y-2 pr-1 max-h-[500px] min-h-[300px]">
+                <div id="leaderboard-container" class="flex-1 overflow-y-auto space-y-2 pr-1 max-h-[550px] min-h-[300px]">
                     <p class="text-center text-gray-400 text-xs py-10">資料同步中...</p>
                 </div>
             </div>
@@ -206,7 +214,6 @@
                 const userCred = await signInAnonymously(auth);
                 currentUser = userCred.user;
 
-                // 初始化完畢，顯示主畫面並啟動即時監聽
                 ui.loading.classList.add('hidden');
                 ui.mainContent.classList.remove('hidden');
                 ui.nickname.value = ""; 
@@ -215,11 +222,10 @@
                 isOfflineMode = true;
                 ui.loading.classList.add('hidden');
                 ui.mainContent.classList.remove('hidden');
-                ui.count.innerText = "離線模式";
+                ui.count.innerText = "狀態: 離線模式";
             }
         }
 
-        // 即時監聽與手動抓取資料的共通渲染函數
         function renderLeaderboard(snapshot) {
             ui.leaderboard.innerHTML = "";
             let i = 1;
@@ -238,10 +244,9 @@
                 `;
                 ui.leaderboard.appendChild(row);
             });
-            ui.count.innerText = `總次數: ${snapshot.size}`;
+            ui.count.innerText = `總筆數: ${snapshot.size}`;
         }
 
-        // 啟動資料庫即時監聽
         function startRealtimeSync() {
             if(!db) return;
             const q = query(collection(db, COLL_ID), orderBy("score", "desc"), limit(50));
@@ -250,8 +255,7 @@
             });
         }
 
-        // 手動重新讀取資料庫 (用於 5s, 10s 的更新要求)
-        async function forceRefreshLeaderboard() {
+        async function forceRefresh() {
             if (!db || isOfflineMode) return;
             ui.syncStatus.classList.remove('hidden');
             const q = query(collection(db, COLL_ID), orderBy("score", "desc"), limit(50));
@@ -290,11 +294,10 @@
             clearInterval(timerInterval);
             ui.btnPlay.classList.remove('hidden');
             ui.instr.classList.add('hidden');
-            ui.btnPlay.innerText = "再挑戰一次";
+            ui.btnPlay.innerText = "再次挑戰";
 
             const today = getMMDD();
 
-            // 更新本地最佳紀錄
             if(sessionScore > bestScore) {
                 bestScore = sessionScore;
                 bestDate = today;
@@ -302,10 +305,9 @@
                 localStorage.setItem('valve_best_v2', JSON.stringify({score: bestScore, date: bestDate}));
             }
 
-            // 【三階段更新開始】
             if(db && currentUser) {
                 try {
-                    // 第一階段：立即上傳並更新 (Firestore addDoc 會觸發實時監聽)
+                    // 第一階段：立即新增並依賴 onSnapshot 更新
                     await addDoc(collection(db, COLL_ID), {
                         name: currentSessionName,
                         score: sessionScore,
@@ -314,19 +316,19 @@
                         timestamp: Date.now()
                     });
                     
-                    // 第二階段：5 秒後重新讀取
+                    // 第二階段：遊戲結束後 10 秒重新整理
                     setTimeout(() => {
-                        console.log("5秒自動重新讀取...");
-                        forceRefreshLeaderboard();
-                    }, 5000);
-
-                    // 第三階段：10 秒後重新讀取
-                    setTimeout(() => {
-                        console.log("10秒自動重新讀取...");
-                        forceRefreshLeaderboard();
+                        console.log("10秒自動更新...");
+                        forceRefresh();
                     }, 10000);
 
-                } catch (e) { console.error("上傳失敗", e); }
+                    // 第三階段：遊戲結束後 20 秒再次校準
+                    setTimeout(() => {
+                        console.log("20秒自動更新...");
+                        forceRefresh();
+                    }, 20000);
+
+                } catch (e) { console.error("Save Error", e); }
             }
         }
 
