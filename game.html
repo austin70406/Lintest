@@ -83,12 +83,8 @@
         </a>
     </header>
 
-    <div id="message-box" class="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 hidden p-3 rounded-xl border-2 font-bold hand-font text-center shadow-lg bg-white border-edwards-ink text-edwards-ink w-10/12 max-w-xs">
-        <span id="message-text"></span>
-    </div>
-
     <main class="flex-grow p-4 w-full max-w-5xl mx-auto flex flex-col items-center">
-        <div class="text-center mb-4 mt-2 w-full">
+        <div class="text-center mb-6 mt-2 w-full">
             <h1 class="text-3xl md:text-5xl font-bold hand-font text-edwards-ink">Global Valve Defender</h1>
             <h2 class="text-sm md:text-xl font-bold text-edwards-gray">全球瓣膜保衛戰 - 20秒極限挑戰</h2>
         </div>
@@ -98,39 +94,47 @@
             <p class="font-bold text-lg hand-font">系統連線中...</p>
         </div>
 
-        <div id="login-screen" class="hidden sketch-box flex-col items-center justify-center p-6 w-full max-w-sm mx-auto">
-            <i class="fa-solid fa-user-nurse text-edwards-red text-4xl mb-3"></i>
-            <h3 class="text-xl font-bold mb-1 text-center">報到！護心使者</h3>
-            <p class="text-gray-400 text-xs mb-6 text-center">每次進入請輸入代號以開始挑戰</p>
-            <input type="text" id="input-nickname" maxlength="10" placeholder="輸入暱稱..." class="sketch-input mb-4" autocomplete="off">
-            <button id="btn-start" class="sketch-btn text-lg w-full py-2.5">開始挑戰</button>
-        </div>
+        <div id="main-content" class="hidden w-full flex flex-col lg:flex-row gap-6 pb-10">
+            
+            <div class="flex-1 flex flex-col gap-6">
+                
+                <div id="login-screen" class="sketch-box flex flex-col items-center justify-center p-6 w-full">
+                    <i class="fa-solid fa-user-nurse text-edwards-red text-4xl mb-3"></i>
+                    <h3 class="text-xl font-bold mb-1">報到！護心使者</h3>
+                    <p class="text-gray-400 text-xs mb-6">輸入代號即可開始挑戰</p>
+                    <input type="text" id="input-nickname" maxlength="10" placeholder="輸入暱稱..." class="sketch-input mb-4" autocomplete="off">
+                    <button id="btn-start" class="sketch-btn text-lg w-full py-2.5">確認並進入</button>
+                </div>
 
-        <div id="game-screen" class="hidden w-full flex flex-col md:flex-row gap-4 pb-10">
-            <div class="sketch-box bg-[#fff8f8] flex-1 flex flex-col items-center justify-between p-4 min-h-[380px]">
-                <div class="text-center w-full bg-white/80 rounded-xl p-3 border-2 border-dashed border-edwards-ink relative mb-4">
-                    <div class="absolute -top-3 -right-1 bg-yellow-400 px-2 py-0.5 rounded-full border-2 border-edwards-ink font-bold text-[10px] shadow-sm">
-                        個人紀錄: <span id="display-high-score">0</span>
+                <div id="game-screen" class="hidden sketch-box bg-[#fff8f8] flex-col items-center justify-between p-4 min-h-[400px]">
+                    <div class="text-center w-full bg-white/80 rounded-xl p-3 border-2 border-dashed border-edwards-ink relative mb-4">
+                        <div class="absolute -top-3 -right-1 bg-yellow-400 px-2 py-0.5 rounded-full border-2 border-edwards-ink font-bold text-[10px] shadow-sm">
+                            個人紀錄: <span id="display-high-score">0</span>
+                        </div>
+                        <p id="display-name" class="font-bold text-edwards-ink text-sm">Player</p>
+                        <div class="text-xl font-mono font-black" id="display-time">20.0s</div>
+                        <div class="text-6xl font-black text-edwards-red hand-font" id="display-score">0</div>
                     </div>
-                    <p id="display-name" class="font-bold text-edwards-ink text-sm">Player</p>
-                    <div class="text-xl font-mono font-black" id="display-time">20.0s</div>
-                    <div class="text-6xl font-black text-edwards-red hand-font" id="display-score">0</div>
-                </div>
 
-                <div id="valve-btn" class="valve-core animate-heartbeat w-40 h-40 md:w-56 md:h-56 rounded-full border-4 border-edwards-ink bg-white flex items-center justify-center shadow-[6px_6px_0_#C8102E] my-4">
-                    <i class="fa-solid fa-heart text-edwards-red text-[7rem] md:text-[9.5rem]"></i>
-                </div>
+                    <div id="valve-btn" class="valve-core animate-heartbeat w-40 h-40 md:w-52 md:h-52 rounded-full border-4 border-edwards-ink bg-white flex items-center justify-center shadow-[6px_6px_0_#C8102E] my-4">
+                        <i class="fa-solid fa-heart text-edwards-red text-[7rem] md:text-[9rem]"></i>
+                    </div>
 
-                <div class="w-full flex justify-center">
-                    <button id="btn-start-session" class="sketch-btn text-lg px-8 py-2.5 w-full max-w-[240px] animate-bounce">再挑戰一次</button>
-                    <p id="game-instruction" class="hidden font-bold text-lg text-edwards-red animate-pulse">連點擊心臟！</p>
+                    <div class="w-full flex justify-center min-h-[50px]">
+                        <button id="btn-start-session" class="sketch-btn text-lg px-8 py-2.5 w-full max-w-[240px] animate-bounce">開始 20s 挑戰</button>
+                        <p id="game-instruction" class="hidden font-bold text-lg text-edwards-red animate-pulse">瘋狂連點！</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="sketch-box flex-1 flex flex-col p-4 min-h-[300px]">
-                <h3 class="text-lg font-bold border-b-2 border-edwards-ink mb-3 pb-2">全球即時排行榜 <span id="online-count" class="text-[10px] float-right text-gray-400">連線中...</span></h3>
-                <div id="leaderboard-container" class="flex-1 overflow-y-auto space-y-2 pr-1 max-h-[400px]">
-                    <p class="text-center text-gray-400 text-xs py-10">資料讀取中...</p>
+            <div class="sketch-box w-full lg:w-[380px] flex flex-col p-4">
+                <h3 class="text-lg font-bold border-b-2 border-edwards-ink mb-3 pb-2">
+                    全球即時排行榜 
+                    <span id="sync-status" class="text-[9px] text-green-600 ml-2 hidden">更新中...</span>
+                    <span id="online-count" class="text-[10px] float-right text-gray-400">讀取中</span>
+                </h3>
+                <div id="leaderboard-container" class="flex-1 overflow-y-auto space-y-2 pr-1 max-h-[500px] min-h-[300px]">
+                    <p class="text-center text-gray-400 text-xs py-10">資料同步中...</p>
                 </div>
             </div>
         </div>
@@ -139,7 +143,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyA2i5zli07cm_Vde7zYPrlCrgCOkKQ3vf4",
@@ -164,6 +168,7 @@
 
         const ui = {
             loading: document.getElementById('loading-screen'),
+            mainContent: document.getElementById('main-content'),
             login: document.getElementById('login-screen'),
             game: document.getElementById('game-screen'),
             nickname: document.getElementById('input-nickname'),
@@ -176,15 +181,13 @@
             btnPlay: document.getElementById('btn-start-session'),
             instr: document.getElementById('game-instruction'),
             leaderboard: document.getElementById('leaderboard-container'),
-            count: document.getElementById('online-count')
+            count: document.getElementById('online-count'),
+            syncStatus: document.getElementById('sync-status')
         };
 
-        function showScreen(name) {
-            ui.loading.classList.add('hidden');
-            ui.login.classList.add('hidden');
-            ui.game.classList.add('hidden');
-            ui[name].classList.remove('hidden');
-            ui[name].classList.add('flex');
+        function getMMDD() {
+            const d = new Date();
+            return `${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getDate().toString().padStart(2,'0')}`;
         }
 
         async function init() {
@@ -203,40 +206,58 @@
                 const userCred = await signInAnonymously(auth);
                 currentUser = userCred.user;
 
+                // 初始化完畢，顯示主畫面並啟動即時監聽
+                ui.loading.classList.add('hidden');
+                ui.mainContent.classList.remove('hidden');
                 ui.nickname.value = ""; 
-                showScreen('login');
-                startSync();
+                startRealtimeSync();
             } catch (e) {
                 isOfflineMode = true;
-                ui.nickname.value = "";
-                showScreen('login');
-                ui.count.innerText = "狀態: 離線模式";
+                ui.loading.classList.add('hidden');
+                ui.mainContent.classList.remove('hidden');
+                ui.count.innerText = "離線模式";
             }
         }
 
-        function startSync() {
+        // 即時監聽與手動抓取資料的共通渲染函數
+        function renderLeaderboard(snapshot) {
+            ui.leaderboard.innerHTML = "";
+            let i = 1;
+            snapshot.forEach(doc => {
+                const d = doc.data();
+                const isMe = currentUser && d.uid === currentUser.uid;
+                const row = document.createElement('div');
+                row.className = `rank-row ${isMe ? 'is-me' : ''}`;
+                row.innerHTML = `
+                    <div class="rank-badge ${i<=3 ? 'rank-'+i : 'bg-gray-100 text-gray-400'}">${i++}</div>
+                    <div class="flex-grow font-bold truncate text-xs">
+                        ${d.name} ${isMe ? '<span class="text-[8px] text-red-500">(你)</span>' : ''}
+                        <div class="text-[8px] text-gray-400 font-normal">${d.date || '--/--'}</div>
+                    </div>
+                    <div class="font-black text-sm">${d.score}</div>
+                `;
+                ui.leaderboard.appendChild(row);
+            });
+            ui.count.innerText = `總次數: ${snapshot.size}`;
+        }
+
+        // 啟動資料庫即時監聽
+        function startRealtimeSync() {
             if(!db) return;
             const q = query(collection(db, COLL_ID), orderBy("score", "desc"), limit(50));
             onSnapshot(q, (snap) => {
-                ui.leaderboard.innerHTML = "";
-                let i = 1;
-                snap.forEach(doc => {
-                    const d = doc.data();
-                    const isMe = currentUser && d.uid === currentUser.uid;
-                    const row = document.createElement('div');
-                    row.className = `rank-row ${isMe ? 'is-me' : ''}`;
-                    row.innerHTML = `
-                        <div class="rank-badge ${i<=3 ? 'rank-'+i : 'bg-gray-100 text-gray-400'}">${i++}</div>
-                        <div class="flex-grow font-bold truncate text-xs">
-                            ${d.name} ${isMe ? '<span class="text-[8px] text-red-500">(你)</span>' : ''}
-                            <div class="text-[8px] text-gray-400 font-normal">${d.date || '--/--'}</div>
-                        </div>
-                        <div class="font-black text-sm">${d.score}</div>
-                    `;
-                    ui.leaderboard.appendChild(row);
-                });
-                ui.count.innerText = `總挑戰次數: ${snap.size}`;
+                renderLeaderboard(snap);
             });
+        }
+
+        // 手動重新讀取資料庫 (用於 5s, 10s 的更新要求)
+        async function forceRefreshLeaderboard() {
+            if (!db || isOfflineMode) return;
+            ui.syncStatus.classList.remove('hidden');
+            const q = query(collection(db, COLL_ID), orderBy("score", "desc"), limit(50));
+            const snap = await getDocs(q);
+            renderLeaderboard(snap);
+            setTimeout(() => ui.syncStatus.classList.add('hidden'), 1000);
         }
 
         ui.btnStart.addEventListener('click', () => {
@@ -245,7 +266,10 @@
             currentSessionName = val;
             ui.name.innerText = currentSessionName;
             ui.best.innerText = bestScore + (bestDate ? ` (${bestDate})` : "");
-            showScreen('game');
+            
+            ui.login.classList.add('hidden');
+            ui.game.classList.remove('hidden');
+            ui.game.classList.add('flex');
         });
 
         ui.btnPlay.addEventListener('click', () => {
@@ -268,9 +292,9 @@
             ui.instr.classList.add('hidden');
             ui.btnPlay.innerText = "再挑戰一次";
 
-            const d = new Date();
-            const today = `${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getDate().toString().padStart(2,'0')}`;
+            const today = getMMDD();
 
+            // 更新本地最佳紀錄
             if(sessionScore > bestScore) {
                 bestScore = sessionScore;
                 bestDate = today;
@@ -278,8 +302,10 @@
                 localStorage.setItem('valve_best_v2', JSON.stringify({score: bestScore, date: bestDate}));
             }
 
+            // 【三階段更新開始】
             if(db && currentUser) {
                 try {
+                    // 第一階段：立即上傳並更新 (Firestore addDoc 會觸發實時監聽)
                     await addDoc(collection(db, COLL_ID), {
                         name: currentSessionName,
                         score: sessionScore,
@@ -287,7 +313,20 @@
                         uid: currentUser.uid,
                         timestamp: Date.now()
                     });
-                } catch (e) { console.error(e); }
+                    
+                    // 第二階段：5 秒後重新讀取
+                    setTimeout(() => {
+                        console.log("5秒自動重新讀取...");
+                        forceRefreshLeaderboard();
+                    }, 5000);
+
+                    // 第三階段：10 秒後重新讀取
+                    setTimeout(() => {
+                        console.log("10秒自動重新讀取...");
+                        forceRefreshLeaderboard();
+                    }, 10000);
+
+                } catch (e) { console.error("上傳失敗", e); }
             }
         }
 
