@@ -1,195 +1,315 @@
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
-    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyA2i5zli07cm_Vde7zYPrlCrgCOkKQ3vf4",
-        authDomain: "game-test-fcec2.firebaseapp.com",
-        projectId: "game-test-fcec2",
-        storageBucket: "game-test-fcec2.firebasestorage.app",
-        messagingSenderId: "354396726740",
-        appId: "1:354396726740:web:52ece7a43fdafcfae8e241"
-    };
-
-    const appId = "global-valve-defender-data";
-    let db, auth, currentUser;
-    let isOfflineMode = false;
-    let currentSessionName = ""; // 本次遊戲使用的名稱
-    let bestScore = 0; // 設備紀錄的最高分
-    let bestDate = ""; // 最佳分數的日期
-
-    let isPlaying = false;
-    let timeLeft = 20.0;
-    let sessionScore = 0;
-    let timerInterval = null;
-
-    const screens = { 
-        loading: document.getElementById('loading-screen'), 
-        login: document.getElementById('login-screen'), 
-        game: document.getElementById('game-screen') 
-    };
-    const inputNickname = document.getElementById('input-nickname');
-    const btnStart = document.getElementById('btn-start');
-    const valveBtn = document.getElementById('valve-btn');
-    const displayScore = document.getElementById('display-score');
-    const displayName = document.getElementById('display-name');
-    const displayHighScore = document.getElementById('display-high-score');
-    const displayTime = document.getElementById('display-time');
-    const btnStartSession = document.getElementById('btn-start-session');
-    const gameInstruction = document.getElementById('game-instruction');
-    const leaderboardContainer = document.getElementById('leaderboard-container');
-    const onlineCount = document.getElementById('online-count');
-
-    function getTodayStr() {
-        const now = new Date();
-        return `${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getDate().toString().padStart(2, '0')}`;
-    }
-
-    function showScreen(name) {
-        Object.values(screens).forEach(s => s.classList.add('hidden'));
-        screens[name].classList.remove('hidden');
-        screens[name].classList.add('flex');
-    }
-
-    async function init() {
-        // 從本地讀取該設備的「個人最佳紀錄」
-        const localData = localStorage.getItem('valve_defender_best_record');
-        if (localData) {
-            const parsed = JSON.parse(localData);
-            bestScore = parsed.score || 0;
-            bestDate = parsed.date || "";
-        }
-
-        try {
-            const app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-            auth = getAuth(app);
-            
-            const userCredential = await signInAnonymously(auth);
-            currentUser = userCredential.user;
-
-            // 每次進入都強制清空名稱輸入框
-            inputNickname.value = ""; 
-            showScreen('login');
-        } catch (e) {
-            console.warn("Firebase Error", e);
-            isOfflineMode = true;
-            inputNickname.value = ""; 
-            showScreen('login');
-            onlineCount.innerText = "狀態: 單機模式";
-        }
-    }
-
-    function handleLogin() {
-        const name = inputNickname.value.trim();
-        if (!name) return alert("請輸入暱稱");
-        
-        currentSessionName = name;
-        startGameUI();
-    }
-
-    function startGameUI() {
-        displayName.innerText = currentSessionName;
-        // 顯示該設備的歷史最高分
-        displayHighScore.innerText = bestScore + (bestDate ? ` (${bestDate})` : "");
-        showScreen('game');
-        // 不論是否玩過，都要掛載排行榜監聽
-        if (!isOfflineMode) startLeaderboardSync();
-    }
-
-    // 全球排行榜監聽（即時更新）
-    function startLeaderboardSync() {
-        const q = query(collection(db, appId), orderBy("score", "desc"), limit(50));
-        onSnapshot(q, (snapshot) => {
-            leaderboardContainer.innerHTML = "";
-            let i = 1;
-            snapshot.forEach((doc) => {
-                const data = doc.data();
-                // 這裡的 isMe 僅作為視覺參考，因為現在每個紀錄都是獨立的
-                const isMe = currentUser && data.uid === currentUser.uid;
-                renderRow(i++, data.name, data.score, data.date || "--/--", isMe);
-            });
-            onlineCount.innerText = `總紀錄數: ${snapshot.size}`;
-        }, (err) => {
-            console.error("Leaderboard error", err);
-        });
-    }
-
-    function renderRow(rank, name, score, date, isMe) {
-        const div = document.createElement('div');
-        div.className = `rank-row ${isMe ? 'is-me' : ''}`;
-        let badge = rank <= 3 ? `rank-${rank}` : 'rank-other';
-        div.innerHTML = `
-            <div class="rank-badge ${badge}">${rank}</div>
-            <div class="flex-grow font-bold truncate">
-                ${name} ${isMe ? '<span class="text-[10px] text-red-500">(你)</span>' : ''}
-                <div class="text-[9px] text-gray-400 font-normal">${date}</div>
-            </div>
-            <div class="font-black text-lg">${score}</div>
-        `;
-        leaderboardContainer.appendChild(div);
-    }
-
-    function startSession() {
-        if (isPlaying) return;
-        isPlaying = true; sessionScore = 0; timeLeft = 20.0;
-        displayScore.innerText = "0";
-        btnStartSession.classList.add('hidden');
-        gameInstruction.classList.remove('hidden');
-        timerInterval = setInterval(() => {
-            timeLeft -= 0.1;
-            if (timeLeft <= 0) { timeLeft = 0; endSession(); }
-            displayTime.innerText = timeLeft.toFixed(1) + "s";
-        }, 100);
-    }
-
-    async function endSession() {
-        isPlaying = false;
-        clearInterval(timerInterval);
-        btnStartSession.classList.remove('hidden');
-        gameInstruction.classList.add('hidden');
-        btnStartSession.innerText = "再挑戰一次";
-
-        const currentDate = getTodayStr();
-
-        // 1. 更新本地設備的最佳紀錄
-        if (sessionScore > bestScore) {
-            bestScore = sessionScore;
-            bestDate = currentDate;
-            displayHighScore.innerText = bestScore + ` (${bestDate})`;
-            localStorage.setItem('valve_defender_best_record', JSON.stringify({ score: bestScore, date: bestDate }));
-        }
-
-        // 2. 獨立儲存本次成績到雲端資料庫（即使分數低或名字相同，也會新增一筆紀錄）
-        if (!isOfflineMode) {
-            try {
-                await addDoc(collection(db, appId), { 
-                    name: currentSessionName, 
-                    score: sessionScore, 
-                    date: currentDate,
-                    uid: currentUser.uid, // 用於識別該紀錄屬於哪個設備
-                    timestamp: Date.now() 
-                });
-                // addDoc 成功後，Firestore 的 onSnapshot 會自動偵測到新資料並刷新排行榜
-            } catch (e) { 
-                console.error("Save session failed", e); 
+<!DOCTYPE html>
+<html lang="zh-TW" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Global Valve Defender | Edwards Lifesciences</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        edwards: { red: '#C8102E', gray: '#898D8D', ink: '#2D3436', paper: '#FDFBF7' }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans TC', 'sans-serif'],
+                        hand: ['Kalam', 'Noto Sans TC', 'cursive'],
+                    }
+                }
             }
         }
-    }
+    </script>
+    
+    <style>
+        body {
+            background-color: #FDFBF7;
+            background-image: radial-gradient(#d5d0ce 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: #2D3436;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        h1, h2, h3, .hand-font { font-family: 'Kalam', 'Noto Sans TC', cursive; }
+        .sketch-box {
+            background: #fff; border: 3px solid #2D3436;
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+            padding: 30px; box-shadow: 6px 6px 0 rgba(200, 16, 46, 0.15);
+            transition: all 0.3s ease; position: relative;
+        }
+        .sketch-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            background: #C8102E; color: #fff !important; border: 2px solid #2D3436;
+            border-radius: 15px 225px 15px 255px/255px 15px 225px 15px;
+            padding: 12px 24px; font-weight: 700; box-shadow: 3px 3px 0 #2D3436;
+            cursor: pointer; font-family: 'Kalam', 'Noto Sans TC', cursive; user-select: none;
+        }
+        .sketch-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #2D3436; }
+        .sketch-input {
+            border: 2px solid #2D3436; border-radius: 10px 20px 10px 20px/20px 10px 20px 10px;
+            padding: 12px 20px; outline: none; background: #fff; text-align: center; width: 100%;
+            font-size: 1.25rem; font-weight: bold;
+        }
+        .rank-row {
+            display: flex; align-items: center; padding: 10px 15px; margin-bottom: 8px;
+            border: 2px dashed #898D8D; border-radius: 10px 20px 10px 20px/20px 10px 20px 10px; background: #fff;
+        }
+        .rank-row.is-me { border: 2px solid #C8102E; background: #fff8f8; box-shadow: 2px 2px 0 rgba(200,16,46,0.1); }
+        .rank-badge { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; margin-right: 12px; flex-shrink: 0; }
+        .rank-1 { background: #FFD700; color: #b8860b; border: 2px solid #b8860b; }
+        .rank-2 { background: #E0E0E0; color: #757575; border: 2px solid #9e9e9e; }
+        .rank-3 { background: #CD7F32; color: #5d4037; border: 2px solid #8d6e63; }
+        .valve-core { cursor: pointer; transition: transform 0.05s ease; user-select: none; -webkit-tap-highlight-color: transparent; }
+        .valve-core:active { transform: scale(0.92) !important; }
+        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.05); } 30% { transform: scale(1); } }
+        .animate-heartbeat { animation: heartbeat 2s infinite; }
+        .particle-score { position: absolute; color: #C8102E; font-family: 'Kalam', cursive; font-weight: bold; font-size: 1.5rem; pointer-events: none; animation: float-up 0.8s ease-out forwards; text-shadow: 2px 2px 0 #fff; z-index: 50; }
+        @keyframes float-up { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-100px); } }
+    </style>
+</head>
+<body class="antialiased font-sans">
 
-    valveBtn.addEventListener('pointerdown', (e) => {
-        if (!isPlaying) return;
-        sessionScore++;
-        displayScore.innerText = sessionScore;
-        const p = document.createElement('div');
-        p.className = 'particle-score'; p.innerText = '+1';
-        p.style.left = `${e.clientX}px`; p.style.top = `${e.clientY}px`;
-        document.body.appendChild(p);
-        setTimeout(() => p.remove(), 800);
-    });
+    <header class="w-full bg-white border-b-4 border-edwards-ink shadow-sm p-4 flex justify-between items-center relative z-20">
+        <div class="flex items-center gap-3">
+            <img class="h-8 object-contain" src="https://www.edwards.com/themes/custom/edwards/logo.svg" alt="Edwards Logo">
+            <span class="font-bold text-edwards-ink hidden md:inline border-l-2 border-slate-300 pl-3">互動挑戰區</span>
+        </div>
+        <a href="./index.html" class="text-sm font-bold text-edwards-ink border-2 border-edwards-ink px-4 py-2 rounded-full hover:bg-slate-100 shadow-[2px_2px_0_#2D3436]">
+            <i class="fa-solid fa-arrow-left mr-2"></i>返回報告
+        </a>
+    </header>
 
-    btnStart.addEventListener('click', handleLogin);
-    btnStartSession.addEventListener('click', startSession);
-    window.addEventListener('load', init);
-</script>
+    <main class="flex-grow flex flex-col items-center justify-center p-4 w-full max-w-5xl mx-auto relative z-10">
+        <div class="text-center mb-6 mt-4 w-full">
+            <h1 class="text-4xl md:text-5xl font-bold mb-2 hand-font text-edwards-ink">Global Valve Defender</h1>
+            <h2 class="text-xl font-bold text-edwards-gray">全球瓣膜保衛戰 - 20秒極限挑戰</h2>
+        </div>
+
+        <div id="loading-screen" class="sketch-box flex flex-col items-center justify-center py-16 w-full max-w-md mx-auto z-20">
+            <i class="fa-solid fa-heart-pulse text-edwards-red text-6xl animate-pulse mb-4"></i>
+            <p class="font-bold text-xl hand-font">正在載入系統...</p>
+        </div>
+
+        <div id="login-screen" class="hidden sketch-box flex-col items-center justify-center p-8 w-full max-w-md mx-auto z-20">
+            <i class="fa-solid fa-user-nurse text-edwards-red text-5xl mb-4"></i>
+            <h3 class="text-2xl font-bold mb-2 text-center text-edwards-ink">報到！護心使者</h3>
+            <p class="text-gray-500 text-sm mb-6 text-center">每次進入請輸入本次使用的代號</p>
+            <input type="text" id="input-nickname" maxlength="10" placeholder="在此輸入暱稱..." class="sketch-input mb-6" autocomplete="off">
+            <button id="btn-start" class="sketch-btn text-xl w-full py-3">進入挑戰</button>
+        </div>
+
+        <div id="game-screen" class="hidden w-full flex-col md:flex-row gap-6 pb-10">
+            <div class="sketch-box bg-[#fff8f8] flex-1 flex flex-col items-center justify-between p-6 relative min-h-[400px]">
+                <div class="text-center w-full z-10 bg-white/80 rounded-xl p-3 border-2 border-dashed border-edwards-ink relative">
+                    <div class="absolute -top-4 -right-2 bg-yellow-400 px-3 py-1 rounded-full border-2 border-edwards-ink font-bold text-xs shadow-sm">
+                        個人紀錄: <span id="display-high-score">0</span>
+                    </div>
+                    <p id="display-name" class="font-bold text-edwards-ink mb-1 text-lg">Player</p>
+                    <div class="text-2xl font-mono font-black text-edwards-ink" id="display-time">20.0s</div>
+                    <div class="text-7xl font-black text-edwards-red hand-font mt-2" id="display-score">0</div>
+                </div>
+
+                <div id="valve-btn" class="valve-core animate-heartbeat w-44 h-44 md:w-60 md:h-60 rounded-full border-4 border-edwards-ink bg-white flex items-center justify-center shadow-[8px_8px_0_#C8102E] my-6">
+                    <i class="fa-solid fa-heart text-edwards-red text-[8rem] md:text-[10rem]"></i>
+                </div>
+
+                <div class="w-full flex justify-center min-h-[60px]">
+                    <button id="btn-start-session" class="sketch-btn text-xl px-10 py-3 w-full max-w-[280px] animate-bounce">開始挑戰</button>
+                    <p id="game-instruction" class="hidden font-bold text-xl text-edwards-red animate-pulse">瘋狂點擊！</p>
+                </div>
+            </div>
+
+            <div class="sketch-box flex-1 flex flex-col p-6 h-[500px] md:h-auto">
+                <h3 class="text-xl font-bold border-b-2 border-edwards-ink mb-4 pb-2">全球即時排行榜 <span id="online-count" class="text-xs float-right text-gray-400">更新中...</span></h3>
+                <div id="leaderboard-container" class="flex-1 overflow-y-auto space-y-2 pr-2">
+                    <p class="text-center text-gray-400 py-10">讀取排名中...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+
+        // Firebase 配置
+        const firebaseConfig = {
+            apiKey: "AIzaSyA2i5zli07cm_Vde7zYPrlCrgCOkKQ3vf4",
+            authDomain: "game-test-fcec2.firebaseapp.com",
+            projectId: "game-test-fcec2",
+            storageBucket: "game-test-fcec2.firebasestorage.app",
+            messagingSenderId: "354396726740",
+            appId: "1:354396726740:web:52ece7a43fdafcfae8e241"
+        };
+
+        const COLL_ID = "global-valve-defender-data";
+        let db, auth, currentUser;
+        let currentName = "";
+        let bestScore = 0;
+        let bestDate = "";
+        
+        let isPlaying = false;
+        let timeLeft = 20.0;
+        let sessionScore = 0;
+        let timerInterval = null;
+
+        // UI 綁定
+        const ui = {
+            loading: document.getElementById('loading-screen'),
+            login: document.getElementById('login-screen'),
+            game: document.getElementById('game-screen'),
+            nickname: document.getElementById('input-nickname'),
+            btnStart: document.getElementById('btn-start'),
+            valve: document.getElementById('valve-btn'),
+            score: document.getElementById('display-score'),
+            name: document.getElementById('display-name'),
+            best: document.getElementById('display-high-score'),
+            time: document.getElementById('display-time'),
+            btnPlay: document.getElementById('btn-start-session'),
+            instr: document.getElementById('game-instruction'),
+            leaderboard: document.getElementById('leaderboard-container'),
+            count: document.getElementById('online-count')
+        };
+
+        function showScreen(name) {
+            Object.values(ui).forEach(el => { if(el && el.classList && el.id.includes('screen')) el.classList.add('hidden'); });
+            ui[name].classList.remove('hidden');
+            ui[name].classList.add('flex');
+        }
+
+        function getMMDD() {
+            const d = new Date();
+            return `${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getDate().toString().padStart(2,'0')}`;
+        }
+
+        async function init() {
+            // 讀取本地舊紀錄
+            const local = localStorage.getItem('valve_best');
+            if(local) {
+                const p = JSON.parse(local);
+                bestScore = p.score || 0;
+                bestDate = p.date || "";
+            }
+
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                
+                const userCred = await signInAnonymously(auth);
+                currentUser = userCred.user;
+
+                // 初始化完畢，進入登入畫面
+                ui.nickname.value = ""; // 每次開啟都清空
+                showScreen('login');
+                startSync();
+            } catch (e) {
+                console.error("Firebase fail", e);
+                ui.nickname.value = "";
+                showScreen('login');
+                ui.count.innerText = "離線模式";
+            }
+        }
+
+        function startSync() {
+            if(!db) return;
+            const q = query(collection(db, COLL_ID), orderBy("score", "desc"), limit(50));
+            onSnapshot(q, (snap) => {
+                ui.leaderboard.innerHTML = "";
+                let i = 1;
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    const isMe = currentUser && d.uid === currentUser.uid;
+                    const row = document.createElement('div');
+                    row.className = `rank-row ${isMe ? 'is-me' : ''}`;
+                    row.innerHTML = `
+                        <div class="rank-badge ${i<=3 ? 'rank-'+i : 'bg-gray-100 text-gray-400'}">${i++}</div>
+                        <div class="flex-grow font-bold truncate">
+                            ${d.name} ${isMe ? '<span class="text-[10px] text-red-500">(你)</span>' : ''}
+                            <div class="text-[9px] text-gray-400 font-normal">${d.date || '--/--'}</div>
+                        </div>
+                        <div class="font-black text-lg">${d.score}</div>
+                    `;
+                    ui.leaderboard.appendChild(row);
+                });
+                ui.count.innerText = `總次數: ${snap.size}`;
+            });
+        }
+
+        function handleLogin() {
+            const val = ui.nickname.value.trim();
+            if(!val) return alert("請輸入暱稱！");
+            currentName = val;
+            ui.name.innerText = currentName;
+            ui.best.innerText = bestScore + (bestDate ? ` (${bestDate})` : "");
+            showScreen('game');
+        }
+
+        function startSession() {
+            if(isPlaying) return;
+            isPlaying = true; sessionScore = 0; timeLeft = 20.0;
+            ui.score.innerText = "0";
+            ui.btnPlay.classList.add('hidden');
+            ui.instr.classList.remove('hidden');
+            
+            timerInterval = setInterval(() => {
+                timeLeft -= 0.1;
+                if(timeLeft <= 0) { timeLeft = 0; endSession(); }
+                ui.time.innerText = timeLeft.toFixed(1) + "s";
+            }, 100);
+        }
+
+        async function endSession() {
+            isPlaying = false;
+            clearInterval(timerInterval);
+            ui.btnPlay.classList.remove('hidden');
+            ui.instr.classList.add('hidden');
+            ui.btnPlay.innerText = "再挑戰一次";
+
+            const today = getMMDD();
+
+            // 設備最高分紀錄
+            if(sessionScore > bestScore) {
+                bestScore = sessionScore;
+                bestDate = today;
+                ui.best.innerText = bestScore + ` (${bestDate})`;
+                localStorage.setItem('valve_best', JSON.stringify({score: bestScore, date: bestDate}));
+            }
+
+            // 【核心邏輯】每次獨立新增，不覆蓋
+            if(db && currentUser) {
+                try {
+                    await addDoc(collection(db, COLL_ID), {
+                        name: currentName,
+                        score: sessionScore,
+                        date: today,
+                        uid: currentUser.uid,
+                        timestamp: Date.now()
+                    });
+                } catch (e) { console.error("Save error", e); }
+            }
+        }
+
+        ui.valve.addEventListener('pointerdown', (e) => {
+            if(!isPlaying) return;
+            sessionScore++;
+            ui.score.innerText = sessionScore;
+            const p = document.createElement('div');
+            p.className = 'particle-score'; p.innerText = '+1';
+            p.style.left = `${e.clientX}px`; p.style.top = `${e.clientY}px`;
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 800);
+        });
+
+        ui.btnStart.addEventListener('click', handleLogin);
+        ui.btnPlay.addEventListener('click', startSession);
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
