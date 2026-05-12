@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Global Valve Defender | Edwards Lifesciences</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        edwards: {
+                            red: '#C8102E',
+                            gray: '#898D8D',
+                            ink: '#2D3436',
+                            paper: '#FDFBF7'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans TC', 'sans-serif'],
+                        hand: ['Kalam', 'Noto Sans TC', 'cursive'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #FDFBF7;
+            background-image: radial-gradient(#d5d0ce 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: #2D3436;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        h1, h2, h3, .hand-font { font-family: 'Kalam', 'Noto Sans TC', cursive; }
+        .sketch-box {
+            background: #fff;
+            border: 3px solid #2D3436;
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+            padding: 30px;
+            box-shadow: 6px 6px 0 rgba(200, 16, 46, 0.15);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .sketch-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #C8102E;
+            color: #fff !important;
+            border: 2px solid #2D3436;
+            border-radius: 15px 225px 15px 255px/255px 15px 225px 15px;
+            padding: 12px 24px;
+            font-weight: 700;
+            box-shadow: 3px 3px 0 #2D3436;
+            transition: all 0.1s ease;
+            cursor: pointer;
+            font-family: 'Kalam', 'Noto Sans TC', cursive;
+            user-select: none;
+            text-decoration: none;
+        }
+        .sketch-btn:active:not(:disabled) {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0 #2D3436;
+        }
+        .sketch-btn:disabled {
+            background: #898D8D;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: translate(2px, 2px);
+        }
+        .sketch-input {
+            border: 2px solid #2D3436;
+            border-radius: 10px 20px 10px 20px/20px 10px 20px 10px;
+            padding: 12px 20px;
+            font-family: 'Noto Sans TC', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            outline: none;
+            background: #fff;
+            box-shadow: inset 2px 2px 0 rgba(0,0,0,0.05);
+            text-align: center;
+            width: 100%;
+            transition: all 0.2s;
+        }
+        .rank-row {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border: 2px dashed #898D8D;
+            border-radius: 10px 20px 10px 20px/20px 10px 20px 10px;
+            background: #fff;
+        }
+        .rank-row.is-me {
+            border: 2px solid #C8102E;
+            background: #fff8f8;
+            box-shadow: 3px 3px 0 rgba(200, 16, 46, 0.2);
+            transform: scale(1.02);
+            z-index: 10;
+        }
+        .rank-badge {
+            width: 30px; height: 30px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; margin-right: 12px; font-family: 'Kalam', cursive;
+        }
+        .rank-1 { background: #FFD700; color: #b8860b; border: 2px solid #b8860b; }
+        .rank-2 { background: #E0E0E0; color: #757575; border: 2px solid #9e9e9e; }
+        .rank-3 { background: #CD7F32; color: #5d4037; border: 2px solid #8d6e63; }
+        .valve-core {
+            cursor: pointer; transition: transform 0.05s ease;
+            user-select: none; -webkit-tap-highlight-color: transparent;
+        }
+        .valve-core:active { transform: scale(0.92) !important; }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            15% { transform: scale(1.05); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.05); }
+        }
+        .animate-heartbeat { animation: heartbeat 2s infinite; }
+        .particle-score {
+            position: absolute; color: #C8102E; font-family: 'Kalam', cursive;
+            font-weight: bold; font-size: 1.5rem; pointer-events: none;
+            animation: float-up-fade 0.8s ease-out forwards;
+            text-shadow: 2px 2px 0 #fff; z-index: 50;
+        }
+        @keyframes float-up-fade {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-100px) scale(1.5); }
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="antialiased font-sans overflow-x-hidden relative">
+
+    <header class="w-full bg-white border-b-4 border-edwards-ink shadow-sm p-4 flex justify-between items-center relative z-20">
+        <div class="flex items-center gap-3">
+            <img class="h-8 object-contain" src="https://lh3.googleusercontent.com/d/1QJl_AerGZd0jRqOIZY-rCVVe6U67pmJM" alt="Edwards Logo">
+            <span class="font-bold text-edwards-ink hidden md:inline border-l-2 border-slate-300 pl-3">互動挑戰區</span>
+        </div>
+        <a href="./index.html" class="text-sm font-bold text-edwards-ink border-2 border-edwards-ink px-4 py-2 rounded-full hover:bg-slate-100 transition-colors shadow-[2px_2px_0_#2D3436]">
+            <i class="fa-solid fa-arrow-left mr-2"></i>返回報告
+        </a>
+    </header>
+
+    <div id="message-box" class="fixed top-24 left-1/2 transform -translate-x-1/2 z-50 hidden p-4 rounded-xl border-2 font-bold hand-font text-center shadow-lg transition-all duration-300 w-11/12 max-w-sm bg-white border-edwards-ink text-edwards-ink">
+        <span id="message-text"></span>
+    </div>
+
+    <main class="flex-grow flex flex-col items-center justify-center p-4 w-full max-w-5xl mx-auto relative z-10">
+        <div class="text-center mb-8 mt-4 w-full">
+            <h1 class="text-4xl md:text-5xl font-bold mb-2 hand-font text-edwards-ink">Global Valve Defender</h1>
+            <h2 class="text-xl font-bold text-edwards-gray">全球瓣膜保衛戰 - 20秒極限挑戰</h2>
+        </div>
+
+        <div id="loading-screen" class="sketch-box flex flex-col items-center justify-center py-16 w-full max-w-md mx-auto z-20">
+            <i class="fa-solid fa-heart-pulse text-edwards-red text-6xl animate-pulse mb-4"></i>
+            <p class="font-bold text-xl hand-font text-edwards-ink mt-4">正在連接總部資料庫...</p>
+        </div>
+
+        <div id="login-screen" class="hidden sketch-box flex-col items-center justify-center p-8 w-full max-w-md mx-auto z-20">
+            <i class="fa-solid fa-user-nurse text-edwards-red text-5xl mb-4"></i>
+            <h3 class="text-2xl font-bold mb-2 text-edwards-ink text-center">報到！護心使者</h3>
+            <input type="text" id="input-nickname" maxlength="10" placeholder="輸入你的暱稱" class="sketch-input mb-6">
+            <button id="btn-start" class="sketch-btn text-xl w-full py-3">登入資料庫</button>
+        </div>
+
+        <div id="game-screen" class="hidden w-full flex-col md:flex-row gap-6 pb-10">
+            <div class="sketch-box bg-[#fff8f8] flex-1 flex flex-col items-center justify-between p-6 relative min-h-[400px]">
+                <div class="text-center w-full z-10 bg-white/80 rounded-xl p-3 border-2 border-dashed border-edwards-ink relative">
+                    <div class="absolute -top-4 -right-2 bg-yellow-400 px-3 py-1 rounded-full border-2 border-edwards-ink font-bold text-xs">
+                        最佳紀錄: <span id="display-high-score">0</span>
+                    </div>
+                    <p id="display-name" class="font-bold text-edwards-ink">Player</p>
+                    <div class="text-xl font-mono font-black" id="display-time">20.0s</div>
+                    <div class="text-6xl font-black text-edwards-red hand-font" id="display-score">0</div>
+                </div>
+
+                <div id="valve-btn" class="valve-core animate-heartbeat w-48 h-48 md:w-64 md:h-64 rounded-full border-4 border-edwards-ink bg-white flex items-center justify-center shadow-[8px_8px_0_#C8102E] my-8">
+                    <i class="fa-solid fa-heart text-edwards-red text-[8rem] md:text-[11rem]"></i>
+                </div>
+
+                <button id="btn-start-session" class="sketch-btn text-xl px-8 py-3 w-full max-w-[250px] animate-bounce">開始挑戰</button>
+                <p id="game-instruction" class="hidden font-bold text-lg">瘋狂點擊！</p>
+            </div>
+
+            <div class="sketch-box flex-1 flex flex-col p-6 h-[500px] md:h-auto">
+                <h3 class="text-xl font-bold border-b-2 border-edwards-ink mb-4 pb-2">全球英雄榜 <span id="online-count" class="text-xs float-right">同步中...</span></h3>
+                <div id="leaderboard-container" class="flex-1 overflow-y-auto no-scrollbar space-y-2"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Firebase SDK 整合區 -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-analytics.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, collection, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+        // 你提供的配置
+        const firebaseConfig = {
+            apiKey: "AIzaSyA2i5zli07cm_Vde7zYPrlCrgCOkKQ3vf4",
+            authDomain: "game-test-fcec2.firebaseapp.com",
+            projectId: "game-test-fcec2",
+            storageBucket: "game-test-fcec2.firebasestorage.app",
+            messagingSenderId: "354396726740",
+            appId: "1:354396726740:web:52ece7a43fdafcfae8e241",
+            measurementId: "G-3EL98VRHF2"
+        };
+
+        // 初始化 Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // 遊戲參數
+        const appId = "global-valve-defender-data"; // 資料庫中的集合名稱
+        let currentUser;
+        let myData = { name: "Guest", score: 0 };
+        let isPlaying = false;
+        let timeLeft = 20.0;
+        let sessionScore = 0;
+        let timerInterval = null;
+
+        // UI 元件
+        const screens = { loading: document.getElementById('loading-screen'), login: document.getElementById('login-screen'), game: document.getElementById('game-screen') };
+        const inputNickname = document.getElementById('input-nickname');
+        const btnStart = document.getElementById('btn-start');
+        const valveBtn = document.getElementById('valve-btn');
+        const displayScore = document.getElementById('display-score');
+        const displayName = document.getElementById('display-name');
+        const displayHighScore = document.getElementById('display-high-score');
+        const displayTime = document.getElementById('display-time');
+        const btnStartSession = document.getElementById('btn-start-session');
+        const gameInstruction = document.getElementById('game-instruction');
+        const leaderboardContainer = document.getElementById('leaderboard-container');
+        const onlineCount = document.getElementById('online-count');
+
+        function showScreen(name) {
+            Object.values(screens).forEach(s => s.classList.add('hidden'));
+            screens[name].classList.remove('hidden');
+            screens[name].classList.add('flex');
+        }
+
+        // 初始化連線
+        async function init() {
+            try {
+                const userCredential = await signInAnonymously(auth);
+                currentUser = userCredential.user;
+                
+                const myDocRef = doc(db, appId, currentUser.uid);
+                const myDocSnap = await getDoc(myDocRef);
+
+                if (myDocSnap.exists()) {
+                    myData = myDocSnap.data();
+                    startGameUI();
+                } else {
+                    showScreen('login');
+                }
+            } catch (e) {
+                console.error("Firebase Init Error", e);
+                alert("資料庫連線失敗，請檢查 Firebase Console 的權限設定");
+            }
+        }
+
+        async function handleLogin() {
+            const name = inputNickname.value.trim();
+            if (!name) return alert("請輸入暱稱");
+            
+            myData = { name, score: 0, timestamp: Date.now() };
+            await setDoc(doc(db, appId, currentUser.uid), myData);
+            startGameUI();
+        }
+
+        function startGameUI() {
+            displayName.innerText = myData.name;
+            displayHighScore.innerText = myData.score;
+            showScreen('game');
+            startLeaderboardSync();
+        }
+
+        // 排行榜即時同步
+        function startLeaderboardSync() {
+            const q = query(collection(db, appId), orderBy("score", "desc"), limit(50));
+            onSnapshot(q, (snapshot) => {
+                leaderboardContainer.innerHTML = "";
+                let i = 1;
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const isMe = doc.id === currentUser.uid;
+                    renderRow(i++, data.name, data.score, isMe);
+                });
+                onlineCount.innerText = `總計玩家: ${snapshot.size}`;
+            });
+        }
+
+        function renderRow(rank, name, score, isMe) {
+            const div = document.createElement('div');
+            div.className = `rank-row ${isMe ? 'is-me' : ''}`;
+            let badge = rank <= 3 ? `rank-${rank}` : 'rank-other';
+            div.innerHTML = `
+                <div class="rank-badge ${badge}">${rank}</div>
+                <div class="flex-grow font-bold truncate">${name} ${isMe ? '(你)' : ''}</div>
+                <div class="font-black text-lg">${score}</div>
+            `;
+            leaderboardContainer.appendChild(div);
+        }
+
+        // 遊戲邏輯
+        function startSession() {
+            isPlaying = true;
+            sessionScore = 0;
+            timeLeft = 20.0;
+            displayScore.innerText = "0";
+            btnStartSession.classList.add('hidden');
+            gameInstruction.classList.remove('hidden');
+            
+            timerInterval = setInterval(() => {
+                timeLeft -= 0.1;
+                if (timeLeft <= 0) {
+                    timeLeft = 0;
+                    endSession();
+                }
+                displayTime.innerText = timeLeft.toFixed(1) + "s";
+            }, 100);
+        }
+
+        async function endSession() {
+            isPlaying = false;
+            clearInterval(timerInterval);
+            btnStartSession.classList.remove('hidden');
+            gameInstruction.classList.add('hidden');
+            btnStartSession.innerText = "再挑戰一次";
+
+            if (sessionScore > myData.score) {
+                myData.score = sessionScore;
+                displayHighScore.innerText = myData.score;
+                await updateDoc(doc(db, appId, currentUser.uid), { 
+                    score: sessionScore, 
+                    timestamp: Date.now() 
+                });
+            }
+        }
+
+        valveBtn.addEventListener('pointerdown', (e) => {
+            if (!isPlaying) return;
+            sessionScore++;
+            displayScore.innerText = sessionScore;
+            // 噴發特效
+            const p = document.createElement('div');
+            p.className = 'particle-score';
+            p.innerText = '+1';
+            p.style.left = `${e.clientX}px`;
+            p.style.top = `${e.clientY}px`;
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 800);
+        });
+
+        btnStart.addEventListener('click', handleLogin);
+        btnStartSession.addEventListener('click', startSession);
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
